@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--font-noto);
 }
 
 html,
@@ -15,7 +16,21 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 0;
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(60, 60, 60, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(70, 70, 70, 0.7);
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #fff;
 }
 
 @layer base {
@@ -40,6 +55,16 @@ body {
     -webkit-line-clamp: 3;
     line-clamp: 3;
     -webkit-box-orient: vertical;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input[type=number] {
+    -moz-appearance: textfield;
   }
 }
 

@@ -8,8 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {},
-        secondary: {},
+        primary: {DEFAULT: "#2E4374"},
+        secondary: {DEFAULT: "#4B527E"},
+        accent: {DEFAULT: "#E5C3A6"},
+        offset: {DEFAULT: "#7C81AD"},
         tertiary: {},
         dark: {},
         light: {},
@@ -17,17 +19,29 @@ module.exports = {
         warning: {},
         danger: {},
         info: {},
-        white: {},
-        black: {},
+        white: {DEFAULT: "#fff"},
+        black: {DEFAULT: "#000"},
       },
       fontFamily: {
-        sans: [],
+        sans: ['var(--font-noto)', 'sans'],
+        handlee: ['var(--font-handlee)'],
         serif: [],
         mono: [],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      animation: {
+        ["infinite-slider"]: "infiniteSlider 5s linear infinite",
+      },
+      keyframes: {
+        infiniteSlider: {
+          "0%": { transform: "translateX(0)" },
+          "100%": {
+            transform: "translateX(-100%)",
+          },
+        },
       },
     },
   },
