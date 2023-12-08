@@ -1,0 +1,43 @@
+{
+  "name": "fanatix",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/contracts",
+      "packages/client"
+    ]
+  },
+  "scripts": {
+    "account": "yarn workspace @fanatix/contracts account",
+    "chain": "yarn workspace @fanatix/contracts chain",
+    "fork": "yarn workspace @fanatix/contracts fork",
+    "deploy": "yarn workspace @fanatix/contracts deploy",
+    "verify": "yarn workspace @fanatix/contracts verify",
+    "compile": "yarn workspace @fanatix/contracts compile",
+    "generate": "yarn workspace @fanatix/contracts generate",
+    "hardhat:lint": "yarn workspace @fanatix/contracts lint",
+    "hardhat:lint-staged": "yarn workspace @fanatix/contracts lint-staged",
+    "hardhat:test": "yarn workspace @fanatix/contracts test",
+    "test": "yarn hardhat:test",
+    "start": "yarn workspace @fanatix/client dev",
+    "next:lint": "yarn workspace @fanatix/client lint",
+    "next:format": "yarn workspace @fanatix/client format",
+    "next:check-types": "yarn workspace @fanatix/client check-types",
+    "postinstall": "husky install",
+    "precommit": "lint-staged",
+    "format": "prettier --write ./packages/**/**/*.{js,jsx,ts,tsx,json,md}"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  },
+  "lint-staged": {
+    "*.+(js|jsx|ts|tsx)": [
+      "eslint --fix"
+    ],
+    "*.+(js|jsx|ts|tsx|json|css|scss|md|mdx)": [
+      "prettier --write"
+    ]
+  }
+}
