@@ -1,10 +1,13 @@
 import React from "react"
 
+import { MdArrowOutward, MdArrowForward } from 'react-icons/md'
+
 const variants = {
-  primary: "",
-  secondary: "",
-  link: "",
-  pill: "",
+  primary: "bg-accent text-primary",
+  secondary: "border-2 border-primary text-accent hover:bg-primary",
+  link: "text-md group text-accent",
+  external_link: "!px-1 group text-md text-accent",
+  plain: "text-md text-accent",
 }
 
 interface ButtonProperties extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -25,7 +28,7 @@ const Button = ({
   style,
   ...properties
 }: ButtonProperties) => {
-  const BASE_CLASS = ""
+  const BASE_CLASS = "flex justify-center items-center text-semibold rounded-full px-3 py-1 transition-all"
 
   return (
     <button
@@ -38,6 +41,8 @@ const Button = ({
     >
       {children && children}
       {title && <p className={` ${textClassName}`}>{title}</p>}
+      {variant === "external_link" && <MdArrowOutward className="ml-1 group-hover:rotate-45 transition-all"/>}
+      {variant === "link" && <MdArrowForward className="ml-1 group-hover:ml-2 transition-all"/>}
     </button>
   )
 }
