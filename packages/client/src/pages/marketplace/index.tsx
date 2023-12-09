@@ -1,6 +1,8 @@
 import React from "react"
 
 import NFTDisplayCard, { NFTDisplayCardProps } from "@/components/ui/NFTDisplayCard"
+import Hoverable from "@/components/ui/hoverable"
+import Input from "@/components/ui/input"
 
 const Marketplace = () => {
   const recommendedNFTs: NFTDisplayCardProps[] = [
@@ -61,10 +63,19 @@ const Marketplace = () => {
           <h1 className="text-3xl text-accent font-bold outline-primary outline-4">
             Recommended for <span className="font-handlee">you</span>!
           </h1>
-          <div className="flex flex-wrap gap-10">
+          <div className="flex flex-wrap justify-evenly w-full gap-10">
             {recommendedNFTs.map((nft, index) => (
-              <NFTDisplayCard key={index} {...nft} />
+              <Hoverable>
+                <NFTDisplayCard key={index} {...nft} />
+              </Hoverable>
             ))}
+          </div>
+        </div>
+        <div className="w-[90%] flex flex-col gap-10 items-center p-10 mx-auto my-10 bg-primary rounded-xl">
+          <h1 className="text-4xl text-accent font-bold">Explore!</h1>
+          <Input name="searchBar" placeholder="Search for NFTs, Creators, etc." className="text-xl border-2 !rounded-full !px-5 border-secondary w-full text-center"></Input>
+          <div className="flex gap-10 justify-evenly">
+            {/* // TODO: Add logic for rendering all listed NFTs here */}
           </div>
         </div>
       </div>
