@@ -50,18 +50,18 @@ app.post("/upload", upload.single("audio"), async (req, res) => {
 // Function to convert the received webm buffer to mp3 buffer using FFmpeg
 const convertToMP3 = (webmBuffer) => {
   return new Promise((resolve, reject) => {
-    ffmpeg()
-      .input(webmBuffer)
-      .inputFormat("webm")
-      .toFormat("mp3")
-      .audioCodec("libmp3lame")
-      .on("end", () => {
-        const mp3Buffer = fs.readFileSync("output.mp3")
-        // Optionally, delete the generated mp3 file after processing
-        fs.unlinkSync("output.mp3")
-        resolve(mp3Buffer)
-      })
-      .save("output.mp3")
+    // ffmpeg()
+    //   .input(webmBuffer)
+    //   .inputFormat("webm")
+    //   .toFormat("mp3")
+    //   .audioCodec("libmp3lame")
+    //   .on("end", () => {
+    //     const mp3Buffer = fs.readFileSync("output.mp3")
+    //     // Optionally, delete the generated mp3 file after processing
+    //     fs.unlinkSync("output.mp3")
+    //     resolve(mp3Buffer)
+    //   })
+    //   .save("output.mp3")
   })
 }
 
