@@ -7,7 +7,7 @@ import { Tab } from "@headlessui/react"
 import { useUserContext } from "@/providers/user-context"
 
 const Creator = () => {
-  const user = useUserContext()
+  const user = useUserContext();
   const router = useRouter()
   const [loading, setLoading] = React.useState(true)
   React.useEffect(() => {
