@@ -3,8 +3,9 @@ import React from "react"
 import { useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
+import uuid from "react-uuid"
 
-import { HUDDLE01_API_KEY } from "@/config/env"
+import { HUDDLE01_API_KEY, SYMBL_ACCESS_TOKEN, SYMBL_APP_ID } from "@/config/env"
 import { useRoom } from "@huddle01/react/hooks"
 import { AccessToken, Role } from "@huddle01/server-sdk/auth"
 
@@ -13,7 +14,7 @@ import Input from "@/components/ui/input"
 const Huddle01Stream = () => {
   const router = useRouter()
 
-  const { joinRoom } = useRoom({
+  const { joinRoom, leaveRoom, room } = useRoom({
     onJoin: () => {
       console.log({
         displayName: "guest",
@@ -45,11 +46,14 @@ const Huddle01Stream = () => {
     console.log("userToken", userToken)
 
     // Socket connection to AI model
-    const symblWebSocketUrl = `wss://api.symbl.ai/v1/streaming/${roomId}?access_token=${userToken}`
+    const id = uuid()
+    const symblWebSocketUrl = `wss://api.symbl.ai/v1/streaming/${id}?access_token=${SYMBL_ACCESS_TOKEN}`
     const socket = new WebSocket(symblWebSocketUrl)
 
     // @ts-ignore
     window.huddle01ws = socket
+    // @ts-ignore
+    window.huddle01wsConversationId = id
 
     socket.onopen = () => {
       console.log("WebSocket connection established with Symbl.ai")

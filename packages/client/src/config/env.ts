@@ -9,3 +9,4 @@ export const HUDDLE01_PROJECT_ID: string = process.env.NEXT_PUBLIC_HUDDLE01_PROJ
 // Symbl
 export const SYMBL_APP_ID = process.env.NEXT_PUBLIC_SYMBL_APP_ID ?? ""
 export const SYMBL_APP_SECRET = process.env.NEXT_PUBLIC_SYMBL_APP_SECRET ?? ""
+export const SYMBL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_SYMBL_ACCESS_TOKEN ?? ""
