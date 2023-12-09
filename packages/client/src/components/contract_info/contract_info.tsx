@@ -13,7 +13,19 @@ const mintingContract = async() => {
     return contract;
 }
 
-const mintingNFT = async() => {
+export const getUniqueId = async() => {
+    const contract = new ethers.Contract(contractAddress, abi, useWallet.arguments);
+    await contract.initialize("tokenURI");
+    await contract.createTier(1, 10);
+    await contract.createTier(2, 10);
+    await contract.createTier(3, 10);
+    console.log("contract created");
+    var val = await contract.composeLDA_ID(1,1);
+    await contract.mintfantixToOwner(useAddress,val,"data",1);
+    return val;
+
+}
+export const mintingNFT = async() => {
     const contract = new ethers.Contract(contractAddress, abi, useWallet.arguments);
     var val = await contract.composeLDA_ID(1,1);
     await contract.mintfantixToOwner(useAddress,val,"data",1);
