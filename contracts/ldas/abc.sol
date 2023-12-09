@@ -34,6 +34,15 @@ contract abc is
     /// @dev Mapping (fantix) => (owned index)
     mapping(uint256 => uint256) internal _OWNED_TOKENS_INDEX_;
 
+    /// @dev Maping (ID) => (owner address)
+    mapping(uint256 => address) public _OWNID_;
+
+    /// @dev Mapping (owner address) => (owned count)
+    mapping(address  => uint256) public  _OWNED_;
+
+    ///@dev no of owners
+    uint256 public noOfOwners;
+
     event initialized(string tokenid);
 
     event tierCreator(uint128 tierId, uint256 maxSupply);
@@ -141,7 +150,8 @@ contract abc is
         bytes memory _data= bytes(abi.encodePacked(data));
         _mint(recipient, fantix, 1,_data);
         _OWNERS_[fantix] = recipient;
-
+        if(_OWNED_[recipient] == 0) noOfOwners++;
+        _OWNED_[recipient] += noOfNFT;
         emit mintToOwner("minted token", recipient, noOfNFT);
     }
 
@@ -149,7 +159,7 @@ contract abc is
     function tierMaxSupply(
         uint128 tierId
     )
-        external
+        public
         view
         returns (uint256)
     {
