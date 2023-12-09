@@ -10,6 +10,7 @@ const mintingContract = async() => {
     await contract.createTier(2, 10);
     await contract.createTier(3, 10);
     console.log("contract created");
+    return contract;
 }
 
 const mintingNFT = async() => {
