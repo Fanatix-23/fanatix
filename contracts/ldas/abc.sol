@@ -34,14 +34,11 @@ contract abc is
     /// @dev Mapping (fantix) => (owned index)
     mapping(uint256 => uint256) internal _OWNED_TOKENS_INDEX_;
 
-    /// @dev Maping (ID) => (owner address)
-    mapping(uint256 => address) public _OWNID_;
+    /// @dev (owner address)
+    address payable[] public _OWNID_;
 
     /// @dev Mapping (owner address) => (owned count)
-    mapping(address  => uint256) public  _OWNED_;
-
-    ///@dev no of owners
-    uint256 public noOfOwners;
+   mapping(address => uint256) public  _OWNED_;
 
     event initialized(string tokenid);
 
@@ -128,7 +125,7 @@ contract abc is
     }
 
     function mintfantixToOwner(
-        address recipient,
+        address payable recipient,
         uint256 fantix,
         string  memory data,
         uint128 noOfNFT
@@ -150,7 +147,7 @@ contract abc is
         bytes memory _data= bytes(abi.encodePacked(data));
         _mint(recipient, fantix, 1,_data);
         _OWNERS_[fantix] = recipient;
-        if(_OWNED_[recipient] == 0) noOfOwners++;
+        if(_OWNED_[recipient] == 0) _OWNID_.push(recipient);
         _OWNED_[recipient] += noOfNFT;
         emit mintToOwner("minted token", recipient, noOfNFT);
     }
