@@ -5,12 +5,13 @@ interface Input {
     name: string
     type?: "text" | "number"
     variant?: "primary" | "secondary"
+    onChange?: (e: any) => void
     placeholder?: string
     className?: string
 }
 
 const TEXT_VARIANTS = {
-    "primary": 'border border-accent border-2 rounded-md bg-transparent text-offset text-lg p-2 focus:outline-none focus:border-primary',
+    "primary": 'border-primary border-b-2 rounded-md bg-transparent text-accent text-lg p-2 outline-none focus:outline-none focus:border-accent',
     "secondary": ''
 }
 
@@ -19,7 +20,7 @@ const NUMBER_VARIANTS = {
     "secondary": "bg-transparent p-2 border-none text-primary rounded-md cursor-default text-center focus:outline-none"
 }
 
-const Input: React.FC<Input> = ({ type = "text", variant = "primary", name, placeholder, className }) => {
+const Input: React.FC<Input> = ({ type = "text", variant = "primary", name, placeholder, className, onChange }) => {
     if (type === "number") {
         if (variant === "primary") {
             return (
@@ -69,6 +70,7 @@ const Input: React.FC<Input> = ({ type = "text", variant = "primary", name, plac
             className={clsx(TEXT_VARIANTS[variant], className)}
             placeholder={placeholder}
             name={name}
+            onChange={onChange}
         />
     )
 }

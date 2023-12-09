@@ -1,5 +1,6 @@
 import NFTDisplayCard from "@/components/ui/NFTDisplayCard"
 import Button from "@/components/ui/button"
+import Hoverable from "@/components/ui/hoverable"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -18,6 +19,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       handle: "@creator1",
       cost: "12 USDC",
       increase: "12%",
+      tier: "silver"
     },
     {
       image: "/image/nft2.jpg",
@@ -45,6 +47,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       handle: "@creator1",
       cost: "12 USDC",
       increase: "12%",
+      tier: "bronze"
     },
   ]
   return (
@@ -73,7 +76,9 @@ const HomePage: React.FC<HomePageProps> = () => {
           <h1 className="text-4xl font-black text-accent">Featured Creators</h1>
           <div className="flex flex-wrap justify-evenly gap-10">
             {featuredNFTs.map((data, index) => (
-              <NFTDisplayCard {...data} key={index} />
+              <Hoverable>
+                <NFTDisplayCard {...data} key={index} />
+              </Hoverable>
             ))}
           </div>
           <Link href="/marketplace">
