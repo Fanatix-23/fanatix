@@ -9,7 +9,7 @@ import { IfanatixContract } from "./IfanatixContract.sol";
 import { fanatixUtil } from "../shared/fanatixUtil.sol";
 
 
-contract abc is
+contract fanatix is
     ERC1155UpgradeableGapless,
     OwnableUpgradeableGapless,
     IfanatixContract

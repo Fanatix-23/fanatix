@@ -2,7 +2,7 @@
 pragma solidity 0.8.4;
 import {abc} from "./ldas/abc.sol";
 
-contract revenueSplit is abc {
+contract revenueSplit is fanatix {
 
   function depositRevenue() public payable{}
   function distributeRevenue() public payable {

@@ -14,7 +14,7 @@ describe("Royal1155LDA Contract Tests", function () {
     const maxSupplyExample = 1000;
 
     before(async function () {
-        Royal1155LDA = await ethers.getContractFactory("fanatixContract");
+        Royal1155LDA = await ethers.getContractFactory("fanatix");
         [owner, addr1, addr2, ...addrs] = await ethers.getSigners();
     });
 
