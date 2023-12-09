@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { MdStarBorder, MdMoney, MdCardMembership, MdStar } from "react-icons/md"
 
-interface NFTDisplayCardProps {
+export interface NFTDisplayCardProps {
   image: string
   socialImage: string
   name: string

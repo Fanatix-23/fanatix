@@ -1,6 +1,7 @@
-import NFTDisplayCard from "@/components/ui/NFTDisplayCard"
+import NFTDisplayCard, { NFTDisplayCardProps } from "@/components/ui/NFTDisplayCard"
 import Button from "@/components/ui/button"
 import Hoverable from "@/components/ui/hoverable"
+import { useUserContext } from "@/providers/user-context"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -10,7 +11,7 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = () => {
-  const featuredNFTs = [
+  const featuredNFTs: NFTDisplayCardProps[] = [
     {
       image: "/image/nft1.jpg",
       socialImage: "/image/nft1.jpg",
@@ -19,7 +20,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       handle: "@creator1",
       cost: "12 USDC",
       increase: "12%",
-      tier: "silver"
+      tier: "silver",
     },
     {
       image: "/image/nft2.jpg",
@@ -47,9 +48,11 @@ const HomePage: React.FC<HomePageProps> = () => {
       handle: "@creator1",
       cost: "12 USDC",
       increase: "12%",
-      tier: "bronze"
+      tier: "bronze",
     },
   ]
+
+  const user = useUserContext()
   return (
     <div>
       <div className="min-h-[60vh] w-screen overflow-hidden relative">
@@ -63,14 +66,20 @@ const HomePage: React.FC<HomePageProps> = () => {
           <h1 className="md:text-[5vw] text-4xl md:max-w-[60%] font-black text-accent leading-tight z-10">
             Earn with your fav creators. <span className="font-handlee">Seamlessly.</span>
           </h1>
-          <div className="flex gap-20 z-10">
-            <Button title="Invest now!" className="md:text-4xl md:!p-5 md:!px-10 text-xl" />
-            <Button
-              title="I'm a creator"
-              className="md:text-4xl md:!p-5 md:!px-10 text-xl"
-              variant="secondary"
-            />
-          </div>
+          {user.isLoggedIn ? (
+            <div className="flex gap-20 z-10">
+              <Button title="Go to dashboard" className="md:text-4xl md:!p-5 md:!px-10 text-xl" />
+            </div>
+          ) : (
+            <div className="flex gap-20 z-10">
+              <Button title="Invest now!" className="md:text-4xl md:!p-5 md:!px-10 text-xl" />
+              <Button
+                title="I'm a creator"
+                className="md:text-4xl md:!p-5 md:!px-10 text-xl"
+                variant="secondary"
+              />
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-10 relative min-h-[60vh] rounded-xl w-[90%] mx-auto my-10 overflow-hidden bg-slate-800 p-10">
           <h1 className="text-4xl font-black text-accent">Featured Creators</h1>

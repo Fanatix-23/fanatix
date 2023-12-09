@@ -20,7 +20,7 @@ const Huddle01Stream = () => {
   const { joinRoom } = useRoom({
     onJoin: () => {
       console.log({
-        displayName: displayName,
+        displayName: "guest",
         avatarUrl: `/0.png`,
       })
     },
@@ -81,37 +81,25 @@ const Huddle01Stream = () => {
         <div className="flex flex-col gap-4">
           <div className="flex gap-4">
             <div className="flex flex-col items-center gap-2">
-              <>
+            <>
                 <>
-                  {roomState !== "connected" ? (
-                    <>
-                      <Input
-                        name="displayName"
-                        onChange={(e: any) => {
-                          console.log("Data being set to", e.target.value)
-                        }}
-                        placeholder="Enter your name"
-                        className="rounded-lg border-b-2 p-2"
-                      />
-                      <Button
-                        onClick={async () => {
-                          if (slug && typeof slug === "string") {
-                            const userToken = await createAccessToken(slug)
-                            await joinRoom({
-                              roomId: slug,
-                              token: userToken,
-                            })
-                          } else {
-                            await createAndJoinRoom()
-                          }
-                        }}
-                      >
-                        {slug ? "Join Meeting" : "Create Meeting"}
-                      </Button>
-                    </>
-                  ) : (
-                    <LocalPeerData />
-                  )}
+                  <Input
+                    name="displayName"
+                    onChange={(e) => {
+                      console.log("Data being set to", e.target.value)
+                      //   setDisplayName(e.target.value)
+                    }}
+                    placeholder="Enter you name"
+                    className="rounded-lg border-2 border-gray-200 p-2"
+                  />
+                  <button
+                    className="rounded-lg bg-blue-500 w-full p-2 text-white"
+                    onClick={async () => {
+                      await createAndJoinRoom()
+                    }}
+                  >
+                    {"Create Stream"}
+                  </button>
                 </>
               </>
             </div>

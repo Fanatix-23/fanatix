@@ -4,6 +4,8 @@ import { MdOutlineHome, MdOutlineAllInclusive, MdOutlineShoppingBag } from "reac
 
 import Button from "@/components/ui/button"
 import Link from "next/link"
+import { useUserContext } from "@/providers/user-context"
+import Avatar from "boring-avatars"
 
 interface HeaderProps {
   className?: string
@@ -11,33 +13,46 @@ interface HeaderProps {
 
 const LINKS = [
   {
-    "title": "HOME",
-    "link": "/home",
-    "icon": <MdOutlineHome style={{
-      height: "30px",
-      width: "30px"
-    }} />
+    title: "HOME",
+    link: "/home",
+    icon: (
+      <MdOutlineHome
+        style={{
+          height: "30px",
+          width: "30px",
+        }}
+      />
+    ),
   },
   {
-    "title": "ABOUT",
-    "link": "/about",
-    "icon": <MdOutlineAllInclusive style={{
-      height: "30px",
-      width: "30px"
-    }} />
+    title: "ABOUT",
+    link: "/about",
+    icon: (
+      <MdOutlineAllInclusive
+        style={{
+          height: "30px",
+          width: "30px",
+        }}
+      />
+    ),
   },
   {
-    "title": "MARKETPLACE",
-    "link": "/marketplace",
-    "icon": <MdOutlineShoppingBag style={{
-      height: "30px",
-      width: "30px"
-    }} />
+    title: "MARKETPLACE",
+    link: "/marketplace",
+    icon: (
+      <MdOutlineShoppingBag
+        style={{
+          height: "30px",
+          width: "30px",
+        }}
+      />
+    ),
   },
 ]
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const headerRef = useRef<HTMLDivElement>(null)
+  const user = useUserContext()
   return (
     <div className="z-[100] relative">
       <div
@@ -45,24 +60,36 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         ref={headerRef}
       >
         <div className="flex items-center justify-between w-full text-accent gap-10">
-            <h1 className="font-bold text-xl px-3">FANATIX</h1>
+          <h1 className="font-bold text-xl px-3">FANATIX</h1>
           <div className="justify-center items-center gap-2 text-sm font-semibold hidden md:flex">
-            {LINKS.map(link => {
-              return <Link href={link.link} className="px-2" key={link.link}>{link.title}</Link>
+            {LINKS.map((link) => {
+              return (
+                <Link href={link.link} className="px-2" key={link.link}>
+                  {link.title}
+                </Link>
+              )
             })}
           </div>
-            <Button title="CONNECT" className=""></Button>
+          {user.isLoggedIn ? (
+            <Avatar name={user.user.name} />
+          ) : (
+            <Button title="CONNECT" className="" />
+          )}
         </div>
       </div>
-        <div className="grid grid-cols-3 w-screen md:hidden fixed bottom-0 left-0 bg-gradient-to-t from-slate-800 to-transparent py-2">
-          {
-            LINKS.map(link => {
-              return <Link href={link.link} className="flex flex-col justify-center items-center p-2 text-accent" key={link.link}>
-                {link.icon}
-              </Link>
-            })
-          }
-        </div>
+      <div className="grid grid-cols-3 w-screen md:hidden fixed bottom-0 left-0 bg-gradient-to-t from-slate-800 to-transparent py-2">
+        {LINKS.map((link) => {
+          return (
+            <Link
+              href={link.link}
+              className="flex flex-col justify-center items-center p-2 text-accent"
+              key={link.link}
+            >
+              {link.icon}
+            </Link>
+          )
+        })}
+      </div>
     </div>
   )
 }

@@ -1,15 +1,42 @@
 import React from "react"
 
-interface IUserContext {}
+interface IUserContext {
+  isLoggedIn: boolean
+  user: {
+    name: string
+    isCreator: boolean
+    walletAddress: string
+  }
+}
 
 interface IUserProvider {
   children: React.ReactNode
 }
 
-const Context = React.createContext<IUserContext>({} as IUserContext)
+const Context = React.createContext<IUserContext>({
+  isLoggedIn: false,
+  user: {
+    name: "",
+    isCreator: false,
+    walletAddress: "",
+  },
+} as IUserContext)
 
 const UserProvider = ({ children }: IUserProvider) => {
-  return <Context.Provider value={{}}>{children}</Context.Provider>
+  return (
+    <Context.Provider
+      value={{
+        isLoggedIn: false,
+        user: {
+          name: "",
+          isCreator: false,
+          walletAddress: "",
+        },
+      }}
+    >
+      {children}
+    </Context.Provider>
+  )
 }
 
 const useUserContext = () => {
