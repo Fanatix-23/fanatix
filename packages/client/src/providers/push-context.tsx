@@ -409,6 +409,17 @@ const PushProvider = ({ children }: IPushProvider) => {
     }
   }
 
+  /**
+   * NOTE: Push Spaces
+   */
+  const createSpace = async () => {
+    if (!user) {
+      return null
+    }
+
+    // const response = await PushAPI.
+  }
+
   return (
     <Context.Provider
       value={{
