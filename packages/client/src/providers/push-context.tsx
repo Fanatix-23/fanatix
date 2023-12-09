@@ -9,6 +9,7 @@ import {
   PushAPI,
   Rules,
   space,
+  SpaceIFeeds,
   ConditionType,
 } from "@pushprotocol/restapi"
 import { PushStream } from "@pushprotocol/restapi/src/lib/pushstream/PushStream"
@@ -118,6 +119,29 @@ interface IPushContext {
       chatId: string
       status: ChatStatus | null | undefined
     } | null>
+  }
+
+  space: {
+    createSpace: (params: { name?: string; desc?: string }) => Promise<string | null>
+    joinSpace: (spaceId: string) => Promise<boolean | null>
+    getSpaceDetails: (spaceId: string) => Promise<{
+      spaceName: string
+      spaceDescription: string
+      inviteeDetails:
+        | {
+            [key: string]: unknown
+          }
+        | undefined
+      spaceCreator: string
+      scheduleAt: Date
+      scheduleEnd: Date
+      isPublic: boolean
+    }>
+    startSpace: (spaceId: string) => Promise<boolean | null>
+    endSpace: (spaceId: string) => Promise<boolean | null>
+    addListenerToSpace: (spaceId: string, listener: string) => Promise<boolean | null>
+    removeListenerFromSpace: (spaceId: string, listener: string) => Promise<boolean | null>
+    fetchAllSpaces: (account: string) => Promise<SpaceIFeeds[] | null>
   }
 }
 interface IPushProvider {
@@ -528,12 +552,16 @@ const PushProvider = ({ children }: IPushProvider) => {
     }
   }
 
-  const startSpace = async (spaceId: string) => {}
+  const startSpace = async (spaceId: string) => {
+    return null
+  }
 
-  const endSpace = async (spaceId: string) => {}
+  const endSpace = async (spaceId: string) => {
+    return null
+  }
 
   const addListenerToSpace = async (spaceId: string, listener: string) => {
-    space.addListeners({
+    await space.addListeners({
       spaceId,
       listeners: [
         `eip155:0x65585D8D2475194A26C0B187e6bED494E5D68d5F`,
@@ -543,10 +571,12 @@ const PushProvider = ({ children }: IPushProvider) => {
       pgpPrivateKey: pgpDecrpyptedPvtKey,
       env: CONSTANTS.ENV.STAGING,
     })
+
+    return true
   }
 
   const removeListenerFromSpace = async (spaceId: string, listener: string) => {
-    space.removeListeners({
+    await space.removeListeners({
       spaceId,
       listeners: [
         `eip155:0xB12869BD3a0F9109222D67ba71e8b109B46908f9`,
@@ -558,15 +588,19 @@ const PushProvider = ({ children }: IPushProvider) => {
       pgpPrivateKey: "",
       env: CONSTANTS.ENV.STAGING,
     })
+
+    return true
   }
 
   const fetchAllSpaces = async (account: string) => {
-    space.spaces({
+    const spaces = await space.spaces({
       account: account,
       pgpPrivateKey: "",
       toDecrypt: true,
       env: CONSTANTS.ENV.STAGING,
     })
+
+    return spaces
   }
 
   return (
@@ -592,6 +626,17 @@ const PushProvider = ({ children }: IPushProvider) => {
           updateGroupInfo,
           addMemberToGroup,
           removeMemberFromGroup,
+        },
+
+        space: {
+          createSpace,
+          joinSpace,
+          getSpaceDetails,
+          startSpace,
+          endSpace,
+          addListenerToSpace,
+          removeListenerFromSpace,
+          fetchAllSpaces,
         },
       }}
     >
