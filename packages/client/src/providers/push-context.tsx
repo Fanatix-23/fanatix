@@ -13,9 +13,111 @@ import { PushStream } from "@pushprotocol/restapi/src/lib/pushstream/PushStream"
 import { ethers } from "ethers"
 import React, { useEffect, useState } from "react"
 
-// interface IPushContext
-type IPushContext = any
+interface IPushContext {
+  user: PushAPI | null
+  stream: PushStream | null
+  initialize: () => Promise<void>
 
+  chat: {
+    chatOverview: () => void
+    fetchChats: (recipient: string) => Promise<{
+      latest: {}
+      history: IMessageIPFS[]
+    } | null>
+  }
+  message: {
+    sendMessage: (
+      recipient: string,
+      message: string
+    ) => Promise<{
+      cid: string
+      link: string
+      messageObj: string | MessageObj | undefined
+      chatId: string
+    } | null>
+    sendCustomMessage: (
+      recipient: string,
+      option: Message
+    ) => Promise<{
+      cid: string
+      link: string
+      messageObj: string | MessageObj | undefined
+      chatId: string
+    } | null>
+  }
+
+  group: {
+    createGroup: (
+      name: string,
+      options: GroupCreationOptions
+    ) => Promise<{
+      metadata: {
+        groupCreator: string
+        groupDescription: string
+        groupImage: string | null
+        groupName: string
+        isPublic: boolean
+        groupType?: string
+      }
+      chatId: string
+      status?: ChatStatus | null
+    } | null>
+    joinGroup: (chatId: string) => Promise<{
+      chatId: string
+      status: ChatStatus | null | undefined
+    } | null>
+    leaveGroup: (chatId: string) => Promise<{
+      chatId: string
+      status: ChatStatus | null | undefined
+    } | null>
+    findMyPermissionsInGroup: (chatId: string) => Promise<{
+      rules: Rules | undefined
+      entry: boolean
+      chat: boolean
+    } | null>
+    groupInfo: (chatId: string) => Promise<{
+      metadata: {
+        groupCreator: string
+        groupDescription: string
+        groupImage: string | null
+        groupName: string
+        isPublic: boolean
+        groupType?: string
+      }
+      chatId: string
+      status?: ChatStatus | null
+    } | null>
+    updateGroupInfo: (
+      chatId: string,
+      options: GroupCreationOptions
+    ) => Promise<{
+      metadata: {
+        groupCreator: string
+        groupDescription: string
+        groupImage: string | null
+        groupName: string
+        isPublic: boolean
+        groupType?: string
+      }
+      chatId: string
+      status?: ChatStatus | null
+    } | null>
+    addMemberToGroup: (
+      chatId: string,
+      options: ManageGroupOptions
+    ) => Promise<{
+      chatId: string
+      status: ChatStatus | null | undefined
+    } | null>
+    removeMemberFromGroup: (
+      chatId: string,
+      options: ManageGroupOptions
+    ) => Promise<{
+      chatId: string
+      status: ChatStatus | null | undefined
+    } | null>
+  }
+}
 interface IPushProvider {
   children: React.ReactNode
 }
