@@ -4,6 +4,8 @@ import { useRouter } from "next/router"
 import Avatar from "boring-avatars"
 import { Tab } from "@headlessui/react"
 import { UserContext } from "@/components/layout"
+import Input from "@/components/ui/input"
+import Button from "@/components/ui/button"
 
 const Creator = () => {
   const userContext = React.useContext(UserContext)
@@ -97,6 +99,22 @@ const Creator = () => {
                     <p className="text-offset text-lg">{user?.user.walletAddress}</p>
                   </div>
                 </div>
+              </Tab.Panel>
+              <Tab.Panel>
+                <div className="flex flex-col gap-5 p-5">
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-accent text-2xl">Name</h1>
+                    <p className="text-offset text-lg">{user?.creator.lensId}</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-accent text-2xl">Wallet Address</h1>
+                    <p className="text-offset text-lg">{user?.user.walletAddress}</p>
+                  </div>
+                </div>
+              </Tab.Panel>
+              <Tab.Panel>
+                <Input name="revenueAmount" placeholder="Enter amount to share" />
+                <Button title="Share!" /> 
               </Tab.Panel>
             </Tab.Group>
           </div>

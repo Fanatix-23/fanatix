@@ -11,8 +11,7 @@ export interface NFTDisplayCardProps {
   link: string
   handle: string
   cost: string
-  increase?: string
-  tier?: "gold" | "silver" | "bronze"
+  left: number
 }
 
 const NFTDisplayCard: React.FC<NFTDisplayCardProps> = ({
@@ -22,8 +21,7 @@ const NFTDisplayCard: React.FC<NFTDisplayCardProps> = ({
   link,
   handle,
   cost,
-  increase,
-  tier = "gold",
+  left,
 }) => {
   return (
     <Link href={link}>
@@ -51,34 +49,33 @@ const NFTDisplayCard: React.FC<NFTDisplayCardProps> = ({
               {cost}
             </p>
             <p className="text-md text-primary font-medium bg-offset p-1 rounded-md w-fit items-center justify-center flex gap-2">
-              <MdCardMembership className="text-red-100" />5 left
+              <MdCardMembership className="text-red-100" />
+              {left} left
             </p>
           </div>
         </div>
-        <div className="absolute top-1/4 left-0 -translate-x-1/2 p-2 bg-primary rounded-full text-accent shadow-2xl border-2" style={{
+        <div
+          className="absolute top-1/4 left-0 -translate-x-1/2 p-2 bg-primary rounded-full text-accent shadow-2xl border-2"
+          style={{
             borderColor: {
-                gold: "#FFD700",
-                silver: "#C0C0C0",
-                bronze: "#CD7F32",
-              }[tier],
-        }}>
+              1: "#FFD700",
+              2: "#C0C0C0",
+              3: "#CD7F32",
+            }[left <= 10 ? 3 : left <= 20 ? 2 : 1],
+          }}
+        >
           <MdStar
             style={{
               height: "40px",
               width: "40px",
               color: {
-                gold: "#FFD700",
-                silver: "#C0C0C0",
-                bronze: "#CD7F32",
-              }[tier],
+                1: "#FFD700",
+                2: "#C0C0C0",
+                3: "#CD7F32",
+              }[left <= 10 ? 3 : left <= 20 ? 2 : 1],
             }}
           />
         </div>
-        {increase && (
-          <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 px-2 bg-primary rounded-full text-accent shadow-xl border-2 border-accent">
-            {increase}
-          </div>
-        )}
       </div>
     </Link>
   )

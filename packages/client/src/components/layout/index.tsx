@@ -16,15 +16,17 @@ import Footer from "./footer"
 import Header from "./header"
 
 
-interface IUserContext {
+export interface IUserContext {
   isLoggedIn: boolean
   isCreator: boolean
   user: {
     walletAddress: string
   }
   creator: {
-    lensId: string
+    lensId: string,
+    contract: {}
   }
+  
 }
 
 interface T {
@@ -57,6 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
     },
     creator: {
       lensId: "",
+      contract: ""
     },
   })
   return (

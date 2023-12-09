@@ -2,24 +2,27 @@ import React, { useEffect, useContext } from "react"
 import Image from "next/image"
 import axios from "axios"
 import { useRouter } from "next/router"
-import {ethers} from 'ethers'
-import {contractAddress, abi} from '../../assets/abi/fanatix.json';
+import { Contract, ethers } from "ethers"
+import { contractAddress, abi } from "../../assets/abi/fanatix.json"
 import MetamaskIcon from "@/assets/svg/wallets/metamask.svg"
 import {
   metamaskWallet,
   useConnect,
   useConnectionStatus,
+  useSigner,
   useUser,
   useWallet,
 } from "@thirdweb-dev/react"
 import { UserContext } from "@/components/layout"
 import { toast } from "react-toastify"
+import { mintingContract } from "../contract_info/contract_info"
+import Button from "../ui/button"
 
 const metamask = metamaskWallet()
 
 /// pass something to store the contract or pass to database
 // const WalletConnection = ({useContract}) => {
-  const WalletConnection = () => {
+const WalletConnection = () => {
   const router = useRouter()
 
   const connect = useConnect()
@@ -28,6 +31,7 @@ const metamask = metamaskWallet()
   const userContext = useContext(UserContext)
   const user = userContext?.user
   const setUser = userContext?.setUser
+  const signer = useSigner()
 
   const handleConnection = async () => {
     const wallet = await connect(metamask, {})
@@ -35,11 +39,13 @@ const metamask = metamaskWallet()
   }
 
   useEffect(() => {
-    if (connectionStatus === "connected") {
-      mintingContract();
-      console.log("Wallet connected")
+    console.log("signer: ", signer)
+    if (signer) {
+      let signerAddress: string;
+      signer.getAddress().then((address) => {
+        signerAddress = address;
+      })
       userWallet?.getAddress().then(async (address) => {
-        setUser &&
           setUser({
             isLoggedIn: true,
             isCreator: false,
@@ -48,35 +54,69 @@ const metamask = metamaskWallet()
             },
             creator: {
               lensId: "",
+              contract: signerAddress,
             },
           })
-        const dbData = await axios.post("/api/getData", { data: user })
+        const dbData = await axios.post("/api/getData", {
+          data: {
+            isLoggedIn: true,
+            isCreator: false,
+            user: {
+              walletAddress: address,
+            },
+            creator: {
+              lensId: "",
+              contract: signerAddress,
+            },
+          },
+        })
+        console.log("Data from DB: ", dbData.data.value)
         if (!dbData.data.value) {
-          const social = await axios.post("/api/getSocials", { data: user }).then((res) => res.data)
-          if (!social.data.Wallet?.socials) {
-            toast.error("You need a lens account to become a creator")
-              setUser({
-                isLoggedIn: false,
-                isCreator: false,
-                user: {
-                  walletAddress: "",
-                },
-                creator: {
-                  lensId: "",
-                },
-              })
-            userWallet.disconnect()
-          } else {
-              setUser({
+          const social = await axios
+            .post("/api/getSocials", {
+              data: {
                 isLoggedIn: true,
-                isCreator: true,
+                isCreator: false,
                 user: {
                   walletAddress: address,
                 },
                 creator: {
-                  lensId: social.data.Wallet.socials[0].profileName,
+                  lensId: "",
+                  contract: "",
                 },
-              })
+              },
+            })
+            .then((res) => res.data)
+          console.log("Socials Data: ", social.data)
+          if (!social.data.Wallet?.socials) {
+            console
+            toast.error("You need a lens account to become a creator")
+            setUser({
+              isLoggedIn: false,
+              isCreator: false,
+              user: {
+                walletAddress: "",
+              },
+              creator: {
+                lensId: "",
+                contract: "",
+              },
+            })
+            userWallet.disconnect()
+          } else {
+            console.log("Creating contract")
+            const contract = await mintingContract(signer)
+            setUser({
+              isLoggedIn: true,
+              isCreator: true,
+              user: {
+                walletAddress: address,
+              },
+              creator: {
+                lensId: "",
+                contract: signerAddress,
+              },
+            })
             await axios.post("/api/saveData", {
               data: {
                 isLoggedIn: true,
@@ -85,11 +125,12 @@ const metamask = metamaskWallet()
                   walletAddress: address,
                 },
                 creator: {
-                  lensId: social.data.Wallet.socials[0].profileName,
+                  lensId: "",
+                  contract: signerAddress,
                 },
               },
             })
-          }
+          // }
         } else {
           console.log("Got the values: ", dbData.data.value.data)
           setUser(dbData.data.value.data)
@@ -97,7 +138,7 @@ const metamask = metamaskWallet()
       })
       router.push("/home")
     }
-  }, [connectionStatus])
+  }, [signer])
 
   return (
     <div className="center gap-4 min-w-[360px]">
@@ -107,6 +148,7 @@ const metamask = metamaskWallet()
           <div className="bg-primary h-[3px] w-[25%] signing-loader" />
         </div>
       ) : null}
+
       <button className=" text-white cursor-pointer" onClick={() => handleConnection()}>
         <Image src={MetamaskIcon} width={64} height={64} alt="" />
       </button>
