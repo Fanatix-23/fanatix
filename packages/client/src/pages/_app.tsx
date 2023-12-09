@@ -4,7 +4,6 @@ import clsx from "clsx"
 
 import Layout from "@/components/layout"
 
-import 'react-tabs/style/react-tabs.css';
 import "@/styles/particles.css"
 import "@/styles/globals.css"
 

@@ -2,7 +2,7 @@ import React from "react"
 import { useRouter } from "next/router"
 
 import Avatar from "boring-avatars"
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs"
+import { Tab } from "@headlessui/react"
 
 import { useUserContext } from "@/providers/user-context"
 
@@ -44,16 +44,46 @@ const Creator = () => {
             <p className="text-offset text-lg ">{user.user.walletAddress}</p>
           </div>
           <div className="w-full bg-offset p-10 rounded-xl">
-            <Tabs>
-              <TabList style={{
-                color: '#2E4374'
-              }}>
-                <Tab selectedClassName="text-accent bg-primary border border-accent rounded-t-md">User Details</Tab>
-                <Tab selectedClassName="text-accent bg-primary border border-accent rounded-t-md">Manage NFTs</Tab>
-                <Tab selectedClassName="text-accent bg-primary border border-accent rounded-t-md">Revenue Sharing</Tab>
-                <Tab selectedClassName="text-accent bg-primary border border-accent rounded-t-md">Stream</Tab>
-              </TabList>
-              <TabPanel>
+            <Tab.Group>
+              <Tab.List className="bg-primary mx-auto flex gap-3 justify-evenly w-fit p-3 rounded-xl">
+                <Tab
+                  className={({ selected }) => {
+                    return `outline-none focus:outline-none p-3 rounded-xl text-md font-semibold text-offset ${
+                      selected ? "bg-offset !text-accent" : ""
+                    }`
+                  }}
+                >
+                  User Details
+                </Tab>
+                <Tab
+                  className={({ selected }) => {
+                    return `outline-none focus:outline-none p-3 rounded-xl text-md font-semibold text-offset ${
+                      selected ? "bg-offset !text-accent" : ""
+                    }`
+                  }}
+                >
+                  Manage NFTs
+                </Tab>
+                <Tab
+                  className={({ selected }) => {
+                    return `outline-none focus:outline-none p-3 rounded-xl text-md font-semibold text-offset ${
+                      selected ? "bg-offset !text-accent" : ""
+                    }`
+                  }}
+                >
+                  Revenue Sharing
+                </Tab>
+                <Tab
+                  className={({ selected }) => {
+                    return `outline-none focus:outline-none p-3 rounded-xl text-md font-semibold text-offset ${
+                      selected ? "bg-offset !text-accent" : ""
+                    }`
+                  }}
+                >
+                  Stream
+                </Tab>
+              </Tab.List>
+              <Tab.Panel>
                 <div className="flex flex-col gap-5 p-5">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-accent text-2xl">Name</h1>
@@ -64,8 +94,8 @@ const Creator = () => {
                     <p className="text-offset text-lg">{user.user.walletAddress}</p>
                   </div>
                 </div>
-              </TabPanel>
-            </Tabs>
+              </Tab.Panel>
+            </Tab.Group>
           </div>
         </div>
       </div>

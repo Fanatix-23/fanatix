@@ -35,7 +35,7 @@ body {
 
 .react-tabs__tab--selected {
   background-color: #2E4374;
-  border-color: #wf4c195;
+  border-color: #f4c195;
 }
 
 @layer base {
