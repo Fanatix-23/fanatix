@@ -4,11 +4,14 @@ import { useRouter } from "next/router"
 import {ethers} from 'ethers'
 import {contractAddress, abi} from '../../assets/abi/fanatix.json';
 import MetamaskIcon from "@/assets/svg/wallets/metamask.svg"
-import { metamaskWallet, useConnect, useConnectionStatus , useWallet} from "@thirdweb-dev/react"
+import { metamaskWallet, useConnect, useConnectionStatus , useWallet} from "@thirdweb-dev/react";
+
 
 const metamask = metamaskWallet()
 
-const WalletConnection = () => {
+/// pass something to store the contract or pass to database
+// const WalletConnection = ({useContract}) => {
+  const WalletConnection = () => {
   const router = useRouter()
 
   const connect = useConnect()
@@ -17,15 +20,6 @@ const WalletConnection = () => {
   const handleConnection = async () => {
     const wallet = await connect(metamask, {})
     console.log("Connected: ", wallet)
-  }
-  
-  const mintingContract = async() => {
-    const contract = new ethers.Contract(contractAddress, abi, useWallet);
-    await contract.initialize("tokenURI");
-    await contract.createTier(1, 10);
-    await contract.createTier(2, 10);
-    await contract.createTier(3, 10);
-    console.log("contract created");
   }
 
   useEffect(() => {
