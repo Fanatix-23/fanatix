@@ -59,15 +59,15 @@ const Huddle01Stream = () => {
 
     console.log({ data })
 
-    const { slug } = data.data
+    const { roomId } = data.data
 
-    const userToken = await createAccessToken(slug)
+    const userToken = await createAccessToken(roomId)
     console.log("userToken", userToken)
     await joinRoom({
-      roomId: slug,
+      roomId: roomId,
       token: userToken,
     })
-    router.push(`/stream/${slug}`)
+    router.push(`/stream/${roomId}`)
   }
 
   const createAccessToken = async (userRoomId: string) => {
