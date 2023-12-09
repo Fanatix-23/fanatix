@@ -41,6 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
         <UserProvider>
           <HuddleProvider key="huddle01-provider" client={client}>
             <Huddle01Provider>
+              
               <ToastContainer
                 position="top-center"
                 autoClose={5000}

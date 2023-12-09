@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from "react"
 import { useEffect } from "react"
 import axios from "axios"
@@ -40,14 +41,64 @@ const Huddle01Stream = () => {
     console.log({ data })
 
     const { roomId } = data.data
-
     const userToken = await createAccessToken(roomId)
     console.log("userToken", userToken)
+
+    // Socket connection to AI model
+    const symblWebSocketUrl = `wss://api.symbl.ai/v1/streaming/${roomId}?access_token=${userToken}`
+    const socket = new WebSocket(symblWebSocketUrl)
+
+    // @ts-ignore
+    window.huddle01ws = socket
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established with Symbl.ai")
+    }
+
     await joinRoom({
       roomId: roomId,
       token: userToken,
     })
-    router.push(`/stream/${roomId}`)
+
+    // TODO: After joining room, redirect to stream page after the Symbl websocket connection is established
+    socket.onmessage = (io) => {
+      console.log(io)
+      if (io.type === "started_listening") {
+        const startRequestMessage = {
+          type: "start_request",
+          config: {
+            confidenceThreshold: 0.7,
+            detectEntities: true,
+            languageCode: "en-US",
+            meetingTitle: "Streaming API Meeting",
+            sentiment: true,
+          },
+          customVocabulary: [],
+          disconnectOnStopRequest: true,
+          disconnectOnStopRequestTimeout: 600,
+          insightTypes: ["question", "action_item"],
+          noConnectionTimeout: 600,
+          speaker: {
+            name: "Creator",
+            userId: userToken,
+          },
+          trackers: {
+            enableAllTrackers: true,
+            interimResults: true,
+          },
+        }
+        socket.send(JSON.stringify(startRequestMessage))
+      }
+
+      if (io.type === "conversation_created") {
+        const { conversationId } = io.data
+        // @ts-ignore
+        window.huddle01wsConversationId = conversationId
+        console.clear()
+        console.log("conversationId", conversationId)
+        router.push(`/stream/${roomId}`)
+      }
+    }
   }
 
   const createAccessToken = async (userRoomId: string) => {
