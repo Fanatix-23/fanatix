@@ -3,19 +3,22 @@ import { useRouter } from "next/router"
 
 import Avatar from "boring-avatars"
 import { Tab } from "@headlessui/react"
-
-import { useUserContext } from "@/providers/user-context"
+import { UserContext } from "@/components/layout"
 
 const Creator = () => {
-  const user = useUserContext();
+  const userContext = React.useContext(UserContext)
+
+  const user = userContext?.user
+  const setUser = userContext?.setUser
+
   const router = useRouter()
   const [loading, setLoading] = React.useState(true)
   React.useEffect(() => {
-    if (!user.isLoggedIn) {
+    if (!user?.isLoggedIn) {
       router.push("/")
     }
 
-    if (!user.user.isCreator) {
+    if (!user?.isCreator) {
       router.push("/home")
     }
     setLoading(false)
@@ -34,14 +37,14 @@ const Creator = () => {
             <div className="particle particle-4" />
           </div>
           <h1 className="md:text-[5vw] text-4xl md:max-w-[60%] font-black text-accent leading-tight z-10">
-            Welcome, <span className="font-handlee">{user.user.name}</span>
+            Welcome, <span className="font-handlee">{user?.creator.lensId}</span>
           </h1>
         </div>
         <div className="flex gap-5 mx-auto w-[90%] relative my-10">
           <div className="bg-primary p-10 flex flex-col gap-5 items-center justify-center rounded-xl">
-            <Avatar name={user.user.walletAddress} size={300} />
-            <h1 className="text-accent text-4xl ">{user.user.name}</h1>
-            <p className="text-offset text-lg ">{user.user.walletAddress}</p>
+            <Avatar name={user?.user.walletAddress} size={300} />
+            <h1 className="text-accent text-4xl ">{user?.creator.lensId}</h1>
+            <p className="text-offset text-lg ">{user?.user.walletAddress}</p>
           </div>
           <div className="w-full bg-offset p-10 rounded-xl">
             <Tab.Group>
@@ -87,11 +90,11 @@ const Creator = () => {
                 <div className="flex flex-col gap-5 p-5">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-accent text-2xl">Name</h1>
-                    <p className="text-offset text-lg">{user.user.name}</p>
+                    <p className="text-offset text-lg">{user?.creator.lensId}</p>
                   </div>
                   <div className="flex flex-col gap-2">
                     <h1 className="text-accent text-2xl">Wallet Address</h1>
-                    <p className="text-offset text-lg">{user.user.walletAddress}</p>
+                    <p className="text-offset text-lg">{user?.user.walletAddress}</p>
                   </div>
                 </div>
               </Tab.Panel>

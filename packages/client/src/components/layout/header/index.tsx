@@ -3,9 +3,7 @@ import Avatar from "boring-avatars"
 import Link from "next/link"
 import { createPortal } from "react-dom"
 import { MdOutlineAllInclusive, MdOutlineHome, MdOutlineShoppingBag } from "react-icons/md"
-
-import { useUserContext } from "@/providers/user-context"
-
+import { UserContext } from ".."
 import Button from "@/components/ui/button"
 
 interface HeaderProps {
@@ -53,7 +51,8 @@ const LINKS = [
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const headerRef = useRef<HTMLDivElement>(null)
-  const user = useUserContext()
+  const userContext = React.useContext(UserContext)
+  const user = userContext?.user
   return (
     <div className="z-[100] relative">
       <div
@@ -71,8 +70,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               )
             })}
           </div>
-          {user.isLoggedIn ? (
-            <Avatar name={user.user.walletAddress} />
+          {user?.isLoggedIn ? (
+            <Avatar name={user?.user.walletAddress} />
           ) : (
             <Button title="CONNECT" className="" />
           )}

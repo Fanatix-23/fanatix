@@ -4,7 +4,6 @@ import { ToastContainer } from "react-toastify"
 
 import { HUDDLE01_PROJECT_ID } from "@/config/env"
 import { Huddle01Provider } from "@/providers/huddle01-context"
-import { UserProvider } from "@/providers/user-context"
 import { HuddleClient, HuddleProvider } from "@huddle01/react"
 import {
   coinbaseWallet,
@@ -15,6 +14,25 @@ import {
 
 import Footer from "./footer"
 import Header from "./header"
+
+
+interface IUserContext {
+  isLoggedIn: boolean
+  isCreator: boolean
+  user: {
+    walletAddress: string
+  }
+  creator: {
+    lensId: string
+  }
+}
+
+interface T {
+  user: IUserContext
+  setUser: (user: IUserContext) => void
+}
+
+export const UserContext = React.createContext<T>({} as T)
 
 const client = new HuddleClient({
   projectId: HUDDLE01_PROJECT_ID,
@@ -31,6 +49,16 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, className }) => {
+  const [user, setUser] = React.useState<IUserContext>({
+    isLoggedIn: false,
+    isCreator: false,
+    user: {
+      walletAddress: "",
+    },
+    creator: {
+      lensId: "",
+    },
+  })
   return (
     <>
       <ThirdwebProvider
@@ -38,7 +66,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
         activeChain="ethereum"
         clientId="your-client-id"
       >
-        <UserProvider>
+        <UserContext.Provider value={{user, setUser}}>
           <HuddleProvider key="huddle01-provider" client={client}>
             <Huddle01Provider>
               <ToastContainer
@@ -58,7 +86,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
               <Footer />
             </Huddle01Provider>
           </HuddleProvider>
-        </UserProvider>
+        </UserContext.Provider>
       </ThirdwebProvider>
     </>
   )

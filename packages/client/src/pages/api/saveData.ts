@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
       const database = client.db('fanatix-userdb'); // Choose a name for your database
 
       const collection = database.collection('main-collection'); // Choose a name for your collection
-
+      
       await collection.insertOne({ data });
 
       res.status(201).json({ message: 'Data saved successfully!' });

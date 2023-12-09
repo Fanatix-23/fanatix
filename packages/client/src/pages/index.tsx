@@ -1,7 +1,7 @@
 import NFTDisplayCard, { NFTDisplayCardProps } from "@/components/ui/NFTDisplayCard"
 import Button from "@/components/ui/button"
 import Hoverable from "@/components/ui/hoverable"
-import { useUserContext } from "@/providers/user-context"
+import { UserContext } from "@/components/layout"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -52,7 +52,7 @@ const HomePage: React.FC<HomePageProps> = () => {
     },
   ]
 
-  const user = useUserContext()
+  const user = React.useContext(UserContext).user
   return (
     <div>
       <div className="min-h-[60vh] w-screen overflow-hidden relative">

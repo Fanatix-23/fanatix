@@ -81,8 +81,8 @@ const Stars = () => {
     const StarComponent: React.FC<StarStyle> = i % 2 === 0 ? FourStar : FiveStar
     const style = getRandomStyle()
     stars.push(
-      <div className="animate-pulse" style={{ ...style, animationDelay: `${Math.random()}s` }}>
-        <StarComponent key={i} />
+      <div className="animate-pulse" style={{ ...style, animationDelay: `${Math.random()}s` }} key={i}>
+        <StarComponent />
       </div>
     )
   }
