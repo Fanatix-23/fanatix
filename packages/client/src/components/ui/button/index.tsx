@@ -3,7 +3,7 @@ import React from "react"
 import { MdArrowOutward, MdArrowForward } from 'react-icons/md'
 
 const variants = {
-  primary: "bg-accent text-primary",
+  primary: "bg-accent text-primary font-bold",
   secondary: "border-2 border-primary text-accent hover:bg-primary",
   link: "text-md group text-accent",
   external_link: "!px-1 group text-md text-accent",

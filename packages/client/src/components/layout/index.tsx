@@ -2,7 +2,7 @@ import React from "react"
 import clsx from "clsx"
 import { ToastContainer } from "react-toastify"
 
-import { UserProvider } from "@/providers/user-context"
+// import { UserProvider } from "@/providers/user-context"
 
 import Footer from "./footer"
 import Header from "./header"
@@ -15,7 +15,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   return (
     <>
-      <UserProvider>
+      {/* <UserProvider> */}
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
         <Header />
         <main className={clsx("", className)}>{children}</main>
         <Footer />
-      </UserProvider>
+      {/* </UserProvider> */}
     </>
   )
 }

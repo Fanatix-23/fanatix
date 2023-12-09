@@ -62,15 +62,15 @@ const ui = () => {
               <div
                 className={clsx("h-64 w-64 rounded-md overflow-hidden")}
                 style={{
-                  backgroundImage: `url(/image/illustrative-bg.jpg)`,
+                  backgroundImage: `url(/image/nft2.jpg)`,
                 }}
               ></div>
             </Hoverable>
           </div>
           {/* Plain with image */}
           <NFTDisplayCard 
-            image="/image/illustrative-bg.jpg"
-            socialImage="/image/pastel-hero.jpg"
+            image="/image/nft1.jpg"
+            socialImage="/image/nft2.jpg"
             name="Kanye West"
             link="#"
             handle="@westernKanya"
@@ -80,7 +80,7 @@ const ui = () => {
           {/* Testimonial */}
           <Testimonial 
             title="Testimonial"
-            image="/image/illustrative-bg.jpg"
+            image="/image/nft1.jpg"
             text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus reprehenderit, eum inventore cum repellat, dolor, nam maxime corrupti quasi eius sint? Veniam debitis repudiandae repellendus corporis quisquam magnam excepturi iste?"
           />
           {/* InfoCard */}

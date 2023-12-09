@@ -17,7 +17,7 @@ interface NFTDisplayCardProps {
 const NFTDisplayCard: React.FC<NFTDisplayCardProps> = ({ image, socialImage, name, link, handle, cost, increase }) => {
     return (
         <Link href={link}>
-            <div className="relative min-h-[360px] w-64 p-2 rounded-xl border border-accent bg-primary">
+            <div className="relative min-h-[360px] w-72 p-2 rounded-xl border border-accent bg-primary">
                 <div className="relative h-64 w-full rounded-xl overflow-hidden">
                     <Image
                         fill

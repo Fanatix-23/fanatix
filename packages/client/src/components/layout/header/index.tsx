@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               return <Link href={link.link} className="px-2" key={link.link}>{link.title}</Link>
             })}
           </div>
-            <Button title="CONNECT" className="font-bold"></Button>
+            <Button title="CONNECT" className=""></Button>
         </div>
       </div>
         <div className="grid grid-cols-3 w-screen md:hidden fixed bottom-0 left-0 bg-gradient-to-t from-slate-800 to-transparent py-2">
