@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@huddle01/react": "^1.0.0-alpha.57",
+    "@huddle01/server-sdk": "^1.0.0-alpha.25",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "clsx": "^2.0.0",
@@ -27,6 +29,18 @@
     "@types/node": "20.4.9",
     "@types/react": "18.2.19",
     "@types/react-dom": "18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "8.46.0",
+    "eslint-config-next": "^13.4.13",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.1",
+    "prettier-plugin-tailwindcss": "^0.4.1",
     "typescript": "5.1.6"
   }
 }
