@@ -12,12 +12,12 @@
 html,
 body {
   overflow-x: hidden;
+  background-color: black;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 0;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,8 +34,8 @@ body {
 }
 
 .react-tabs__tab--selected {
-  background-color: #2E4374;
-  border-color: #wf4c195;
+  background-color: #2e4374;
+  border-color: #f4c195;
 }
 
 @layer base {
@@ -74,4 +74,18 @@ body {
 }
 
 @layer utilities {
+}
+
+/* Animations */
+.signing-loader {
+  animation: move-loader 1.5s linear infinite;
+}
+
+@keyframes move-loader {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(500%);
+  }
 }

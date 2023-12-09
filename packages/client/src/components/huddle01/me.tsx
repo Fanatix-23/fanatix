@@ -1,7 +1,11 @@
 import { FC, useEffect, useState } from "react"
+import Avatar from "boring-avatars"
 import clsx from "clsx"
+import { AiOutlineAudio, AiOutlineAudioMuted } from "react-icons/ai"
+import { BsCameraVideo, BsCameraVideoOff } from "react-icons/bs"
 
 import { useDataMessage, useLocalAudio, useLocalPeer, useLocalVideo } from "@huddle01/react/hooks"
+import { Role } from "@huddle01/server-sdk/auth"
 
 import VideoElem from "./video"
 
@@ -9,7 +13,6 @@ const LocalPeerData: FC = () => {
   const displayName: string = "Me"
 
   const { track: cam, enableVideo, disableVideo, isVideoOn } = useLocalVideo()
-
   const { enableAudio, disableAudio, isAudioOn } = useLocalAudio()
 
   const [cursorPosition, setCursorPosition] = useState({
@@ -19,7 +22,7 @@ const LocalPeerData: FC = () => {
 
   const { sendData } = useDataMessage()
 
-  const { updateMetadata } = useLocalPeer<{
+  const { role, updateMetadata } = useLocalPeer<{
     displayName: string
     avatarUrl: string
   }>()
@@ -61,14 +64,6 @@ const LocalPeerData: FC = () => {
 
   return (
     <>
-      <button
-        className="rounded-lg bg-blue-500 w-full p-2 text-white hover:bg-blue-700"
-        onClick={() => {
-          navigator.clipboard.writeText(window.location.href)
-        }}
-      >
-        Copy Link
-      </button>
       <div className="flex flex-col items-center justify-center">
         <div
           style={{
@@ -78,13 +73,7 @@ const LocalPeerData: FC = () => {
           }}
         >
           <div className="relative flex w-32 h-28 rounded-lg bg-gray-200 justify-center items-center">
-            {isVideoOn ? (
-              <VideoElem track={cam} />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-blue-500">
-                {displayName !== "" ? displayName : "Guest"}
-              </div>
-            )}
+            {isVideoOn ? <VideoElem track={cam} /> : <Avatar name={displayName ?? "Guest"} />}
             <div
               className={clsx(
                 "absolute bottom-2 left-2 px-2 rounded-lg",
@@ -113,6 +102,40 @@ const LocalPeerData: FC = () => {
             {isAudioOn ? "Mic:ON" : "Mic:OFF"}
           </button>
         </div>
+        {role === Role.HOST ? (
+          <div className="absolute center bottom-12 bg-white/10 p-4 rounded-lg gap-4">
+            <button
+              className={clsx(
+                "rounded-lg p-2",
+                isAudioOn ? "bg-primary text-accent" : "bg-red-500/100 text-white"
+              )}
+              onClick={() => {
+                if (isAudioOn) {
+                  disableAudio()
+                } else {
+                  enableAudio()
+                }
+              }}
+            >
+              {isAudioOn ? <AiOutlineAudio size={24} /> : <AiOutlineAudioMuted size={24} />}
+            </button>
+            <button
+              className={clsx(
+                "rounded-lg p-2",
+                isVideoOn ? "bg-primary text-accent" : "bg-red-500/100 text-white"
+              )}
+              onClick={() => {
+                if (isVideoOn) {
+                  disableVideo()
+                } else {
+                  enableVideo()
+                }
+              }}
+            >
+              {isVideoOn ? <BsCameraVideo size={24} /> : <BsCameraVideoOff size={24} />}
+            </button>
+          </div>
+        ) : null}
       </div>
     </>
   )

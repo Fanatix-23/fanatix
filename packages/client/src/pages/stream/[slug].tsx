@@ -14,8 +14,6 @@ const Huddle01Room = () => {
   const router = useRouter()
   const { slug } = router.query
 
-  const displayName: string = "Anon"
-
   const { peerIds } = usePeerIds()
 
   const { metadata } = useLocalPeer<{
@@ -26,26 +24,15 @@ const Huddle01Room = () => {
   const { joinRoom, state: roomState } = useRoom({
     onJoin: () => {
       console.log({
-        displayName: displayName,
-        avatarUrl: `/0.png`,
+        avatarUrl: ``,
       })
     },
   })
-
-  useEffect(() => {
-    if (slug && displayName !== "") {
-      console.log({
-        displayName: displayName,
-        avatarUrl: "/0.png",
-      })
-    }
-  }, [slug])
 
   const createAccessToken = async (userRoomId: string) => {
     const accessToken = new AccessToken({
       apiKey: HUDDLE01_API_KEY,
       roomId: userRoomId,
-      // role: data.previewPeers.length > 0 ? Role.LISTENER : Role.HOST,
       role: Role.HOST,
       permissions: {
         admin: true,
@@ -63,7 +50,7 @@ const Huddle01Room = () => {
 
   return (
     <div style={{ pointerEvents: "all", display: "flex" }}>
-      <div className="min-h-screen w-full center flex m-2 justify-center">
+      <div className="relative min-h-screen w-full center flex m-2 justify-center">
         <div className="flex flex-col gap-4">
           <div className="flex gap-4">
             <div className="flex flex-col items-center gap-2">
@@ -73,17 +60,8 @@ const Huddle01Room = () => {
                 <>
                   {roomState !== "connected" ? (
                     <>
-                      <input
-                        value={displayName}
-                        onChange={(e) => {
-                          console.log("Data being set to", e.target.value)
-                          //   setDisplayName(e.target.value)
-                        }}
-                        placeholder="Enter you name"
-                        className="rounded-lg border-2 border-gray-200 p-2"
-                      />
                       <button
-                        className="rounded-lg bg-blue-500 w-full p-2 text-white"
+                        className="rounded-lg bg-primary w-full p-2 text-accent"
                         onClick={async () => {
                           if (slug && typeof slug === "string") {
                             const userToken = await createAccessToken(slug)

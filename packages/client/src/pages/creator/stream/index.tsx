@@ -4,18 +4,13 @@ import axios from "axios"
 import { useRouter } from "next/router"
 
 import { HUDDLE01_API_KEY } from "@/config/env"
-import { useLocalPeer, usePeerIds, useRoom } from "@huddle01/react/hooks"
+import { useRoom } from "@huddle01/react/hooks"
 import { AccessToken, Role } from "@huddle01/server-sdk/auth"
 
-import LocalPeerData from "@/components/huddle01/me"
-import ShowPeers from "@/components/huddle01/peers"
 import Input from "@/components/ui/input"
-import Button from "@/components/ui/button"
 
 const Huddle01Stream = () => {
   const router = useRouter()
-
-  // const displayName: string = "Guest"
 
   const { joinRoom } = useRoom({
     onJoin: () => {
@@ -59,7 +54,6 @@ const Huddle01Stream = () => {
     const accessToken = new AccessToken({
       apiKey: HUDDLE01_API_KEY,
       roomId: userRoomId,
-      // role: data.previewPeers.length > 0 ? Role.LISTENER : Role.HOST,
       role: Role.HOST,
       permissions: {
         admin: true,
@@ -87,18 +81,17 @@ const Huddle01Stream = () => {
                     name="displayName"
                     onChange={(e) => {
                       console.log("Data being set to", e.target.value)
-                      //   setDisplayName(e.target.value)
                     }}
-                    placeholder="Enter you name"
+                    placeholder="Stream name (eg: My Stream)"
                     className="rounded-lg border-2 border-gray-200 p-2"
                   />
                   <button
-                    className="rounded-lg bg-blue-500 w-full p-2 text-white"
+                    className="rounded-lg bg-primary text-accent w-full p-2"
                     onClick={async () => {
                       await createAndJoinRoom()
                     }}
                   >
-                    {"Create Stream"}
+                    Create Stream
                   </button>
                 </>
               </>

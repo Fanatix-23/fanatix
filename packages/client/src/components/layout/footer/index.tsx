@@ -7,11 +7,9 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
-    <div className="bg-primary text-accent w-screen py-10">
+    <div className="relative bg-primary text-accent w-screen py-10 z-[3]">
       <div className="w-[90%] max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-3">
-        <h1 className="font-black text-3xl">
-          FANATIX
-        </h1>
+        <h1 className="font-black text-3xl">FANATIX</h1>
         <div className="flex flex-wrap items-center gap-4 flex-col text-xl font-extrabold">
           <Link href={"#"}>HOME</Link>
         </div>

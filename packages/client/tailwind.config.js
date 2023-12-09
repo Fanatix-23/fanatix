@@ -8,10 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {DEFAULT: "#2E4374"},
-        secondary: {DEFAULT: "#4B527E"},
-        accent: {DEFAULT: "#f4c195"},
-        offset: {DEFAULT: "#7C81AD"},
+        primary: { DEFAULT: "#2E4374" },
+        secondary: { DEFAULT: "#4B527E" },
+        accent: { DEFAULT: "#f4c195" },
+        offset: { DEFAULT: "#7C81AD" },
         tertiary: {},
         dark: {},
         light: {},
@@ -19,12 +19,12 @@ module.exports = {
         warning: {},
         danger: {},
         info: {},
-        white: {DEFAULT: "#fff"},
-        black: {DEFAULT: "#000"},
+        white: { DEFAULT: "#fff" },
+        black: { DEFAULT: "#000" },
       },
       fontFamily: {
-        sans: ['var(--font-noto)', 'sans'],
-        handlee: ['var(--font-handlee)'],
+        sans: ["var(--font-noto)", "sans"],
+        handlee: ["var(--font-handlee)"],
         serif: [],
         mono: [],
       },

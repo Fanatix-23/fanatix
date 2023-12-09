@@ -1,11 +1,12 @@
 import React, { ReactNode, useRef } from "react"
+import Avatar from "boring-avatars"
+import Link from "next/link"
 import { createPortal } from "react-dom"
-import { MdOutlineHome, MdOutlineAllInclusive, MdOutlineShoppingBag } from "react-icons/md"
+import { MdOutlineAllInclusive, MdOutlineHome, MdOutlineShoppingBag } from "react-icons/md"
+
+import { useUserContext } from "@/providers/user-context"
 
 import Button from "@/components/ui/button"
-import Link from "next/link"
-import { useUserContext } from "@/providers/user-context"
-import Avatar from "boring-avatars"
 
 interface HeaderProps {
   className?: string
