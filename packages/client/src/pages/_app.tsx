@@ -4,8 +4,9 @@ import clsx from "clsx"
 
 import Layout from "@/components/layout"
 
-import "@/styles/globals.css"
+import 'react-tabs/style/react-tabs.css';
 import "@/styles/particles.css"
+import "@/styles/globals.css"
 
 import { Noto_Sans, Courgette } from "next/font/google"
 

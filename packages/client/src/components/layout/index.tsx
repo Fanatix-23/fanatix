@@ -28,27 +28,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   return (
     <>
-<<<<<<< Updated upstream
-      <HuddleProvider key="huddle01-provider" client={client}>
-        <Huddle01Provider>
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable={false}
-            pauseOnHover
-            theme="light"
-          />
-          <Header />
-          <main className={clsx("min-h-screen", className)}>{children}</main>
-          <Footer />
-        </Huddle01Provider>
-      </HuddleProvider>
-=======
       <UserProvider>
         <HuddleProvider key="huddle01-provider" client={client}>
           <Huddle01Provider>
@@ -70,7 +49,6 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
           </Huddle01Provider>
         </HuddleProvider>
       </UserProvider>
->>>>>>> Stashed changes
     </>
   )
 }

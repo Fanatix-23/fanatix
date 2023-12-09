@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             })}
           </div>
           {user.isLoggedIn ? (
-            <Avatar name={user.user.name} />
+            <Avatar name={user.user.walletAddress} />
           ) : (
             <Button title="CONNECT" className="" />
           )}

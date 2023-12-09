@@ -26,11 +26,11 @@ const UserProvider = ({ children }: IUserProvider) => {
   return (
     <Context.Provider
       value={{
-        isLoggedIn: false,
+        isLoggedIn: true,
         user: {
-          name: "",
+          name: "Jane Doe",
           isCreator: false,
-          walletAddress: "",
+          walletAddress: "sampleWalletAddress",
         },
       }}
     >

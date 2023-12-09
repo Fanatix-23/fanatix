@@ -33,6 +33,11 @@ body {
   background-color: #fff;
 }
 
+.react-tabs__tab--selected {
+  background-color: #2E4374;
+  border-color: #wf4c195;
+}
+
 @layer base {
 }
 
@@ -62,8 +67,8 @@ body {
     -webkit-appearance: none;
     margin: 0;
   }
-  
-  input[type=number] {
+
+  input[type="number"] {
     -moz-appearance: textfield;
   }
 }

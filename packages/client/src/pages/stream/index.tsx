@@ -81,7 +81,7 @@ const Huddle01Stream = () => {
         <div className="flex flex-col gap-4">
           <div className="flex gap-4">
             <div className="flex flex-col items-center gap-2">
-            <>
+              <>
                 <>
                   <Input
                     name="displayName"
