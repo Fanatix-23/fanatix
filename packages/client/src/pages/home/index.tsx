@@ -1,7 +1,7 @@
 import React from "react"
 import { useUserContext } from "@/providers/user-context"
 import { useRouter } from "next/router"
-import { Tabs, TabList, TabPanel, Tab } from "react-tabs"
+import { Tab } from "@headlessui/react"
 
 import Button from "@/components/ui/button"
 import Avatar from "boring-avatars"
@@ -14,14 +14,14 @@ const Home = () => {
     if (!user.isLoggedIn) {
       router.push("/")
     }
-  
+
     if (user.user.isCreator) {
       router.push("/home/creator")
     }
     setLoading(false)
   }, [])
-  
-  if(loading) return "..."
+
+  if (loading) return "..."
 
   return (
     <div>
@@ -44,16 +44,16 @@ const Home = () => {
             <p className="text-offset text-lg ">{user.user.walletAddress}</p>
           </div>
           <div className="w-full bg-offset p-10 rounded-xl">
-            <Tabs>
-              <TabList>
-                <Tab>
-                  User Details
-                </Tab>
-                <Tab>Holdings</Tab>
-                <Tab>Transactions</Tab>
-              </TabList>
-              <TabPanel
-              >
+            <Tab.Group>
+              <Tab.List className="bg-primary mx-auto flex gap-3 justify-evenly w-fit p-3 rounded-xl">
+                <Tab className={({selected}) => {
+                  return `outline-none focus:outline-none p-3 rounded-xl text-md font-semibold text-offset ${selected ? "bg-offset !text-accent" : ""}`
+                }}>User Details</Tab>
+                <Tab className={({selected}) => {
+                  return `outline-none focus:outline-none p-3 rounded-xl text-md font-semibold text-offset ${selected ? "bg-offset !text-accent" : ""}`
+                }}>Manage NFTs</Tab>
+              </Tab.List>
+              <Tab.Panel>
                 <div className="flex flex-col gap-5 p-5">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-accent text-2xl">Name</h1>
@@ -64,8 +64,8 @@ const Home = () => {
                     <p className="text-offset text-lg">{user.user.walletAddress}</p>
                   </div>
                 </div>
-              </TabPanel>
-            </Tabs>
+              </Tab.Panel>
+            </Tab.Group>
           </div>
         </div>
       </div>
