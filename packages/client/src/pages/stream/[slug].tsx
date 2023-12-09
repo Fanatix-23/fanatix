@@ -32,6 +32,12 @@ const Huddle01Room = () => {
       console.log({
         avatarUrl: ``,
       })
+      startRecording()
+    },
+    onLeave: () => {
+      console.log("Left room")
+      recorder.stop({ roomId: slug as string })
+      socket.close()
     },
   })
 
@@ -39,32 +45,69 @@ const Huddle01Room = () => {
 
   console.log(isAudioOn, {
     audioStream,
-    chunks,
   })
 
   const startRecording = async () => {
     const userToken = await createAccessToken(slug as string)
 
-    const response = await fetch(`https://api.rev.ai/speechtotext/v1/live_stream/rtmp`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${REVAI_ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
+    const response = await axios.post(
+      `https://api.rev.ai/speechtotext/v1/live_stream/rtmp`,
+      {
+        // media_url: `rtmp://live.restream.io/live/${slug}`,
+        "Content-Type": "audio/x-wav",
+        metadata: slug as string,
       },
-      body: JSON.stringify({
-        media_url: `rtmp://live.restream.io/live/${slug}`,
-      }),
-    })
+      {
+        headers: {
+          Authorization: `Bearer ${REVAI_ACCESS_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
 
-    const data = await response.json()
-
-    const { ingestion_url, read_url, stream_name } = data
+    const { ingestion_url, read_url, stream_name } = response.data
     socket = new WebSocket(read_url)
+
+    // Assuming you have obtained the necessary details from the previous response
+    const readUrl =
+      "wss://api.rev.ai/speechtotext/v1/read_stream?read_token=Ji2CwNlLpl-1_3OhUVq1SXxgyjQ31soGqn_xPwVwllc3sFjaqYsMxP7Kg4g9JEW1"
+
+    // Create a WebSocket connection
+    const ws = new WebSocket(readUrl)
+
+    // Handle WebSocket events
+    ws.onopen = () => {
+      console.log("WebSocket connection is open")
+      const audioChunks: Array<Blob> = []
+
+      const mediaRecorder = new MediaRecorder(audioStream as MediaStream)
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.push(event.data)
+        }
+      }
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" })
+
+        const fileReader = new FileReader()
+        fileReader.onload = () => {
+          const arrayBuffer = fileReader.result
+
+          socket.send(arrayBuffer as ArrayBuffer)
+        }
+        fileReader.readAsArrayBuffer(audioBlob)
+      }
+
+      // Start recording
+      mediaRecorder.start()
+    }
 
     socket.onopen = () => {
       console.log("Socket connected")
       recorder.startLivestream({
-        roomId: slug,
+        roomId: slug as string,
         token: userToken,
         rtmpUrls: [ingestion_url],
       })
