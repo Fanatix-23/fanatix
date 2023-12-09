@@ -500,6 +500,75 @@ const PushProvider = ({ children }: IPushProvider) => {
     return entry
   }
 
+  const getSpaceDetails = async (spaceId: string) => {
+    const response = await space.get({
+      spaceId: spaceId,
+      env: CONSTANTS.ENV.STAGING,
+    })
+
+    const {
+      spaceName,
+      spaceDescription,
+      inviteeDetails,
+      spaceCreator,
+      scheduleAt,
+      scheduleEnd,
+      isPublic,
+    } = response
+
+    return {
+      spaceId,
+      spaceName,
+      spaceDescription,
+      inviteeDetails,
+      spaceCreator,
+      scheduleAt,
+      scheduleEnd,
+      isPublic,
+    }
+  }
+
+  const startSpace = async (spaceId: string) => {}
+
+  const endSpace = async (spaceId: string) => {}
+
+  const addListenerToSpace = async (spaceId: string, listener: string) => {
+    space.addListeners({
+      spaceId,
+      listeners: [
+        `eip155:0x65585D8D2475194A26C0B187e6bED494E5D68d5F`,
+        `eip155:0xE99F29C1b2A658a478E7766D5A2bB28322326C45`,
+      ],
+      signer: signer,
+      pgpPrivateKey: pgpDecrpyptedPvtKey,
+      env: CONSTANTS.ENV.STAGING,
+    })
+  }
+
+  const removeListenerFromSpace = async (spaceId: string, listener: string) => {
+    space.removeListeners({
+      spaceId,
+      listeners: [
+        `eip155:0xB12869BD3a0F9109222D67ba71e8b109B46908f9`,
+        `eip155:0x2E3af36E1aC6EEEA2C0d59E43Be1926aBB9eE0BD`,
+      ],
+      // TODO: Add a valid signer
+      signer: null,
+      // TODO: Add a valid pgpDecryptedPvtKey
+      pgpPrivateKey: "",
+      env: CONSTANTS.ENV.STAGING,
+    })
+  }
+
+  const fetchAllSpaces = async (account: string) => {
+    space.spaces({
+      account: account,
+      pgpPrivateKey: "",
+      toDecrypt: true,
+      env: CONSTANTS.ENV.STAGING,
+    })
+  }
+
   return (
     <Context.Provider
       value={{
