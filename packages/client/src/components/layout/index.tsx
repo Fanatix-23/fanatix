@@ -41,7 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
             theme="light"
           />
           <Header />
-          <main className={clsx("", className)}>{children}</main>
+          <main className={clsx("min-h-screen", className)}>{children}</main>
           <Footer />
         </Huddle01Provider>
       </HuddleProvider>
