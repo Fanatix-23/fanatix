@@ -3,18 +3,21 @@ import { useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
 
-import { HUDDLE01_API_KEY, SYMBL_ACCESS_TOKEN } from "@/config/env"
+import { HUDDLE01_API_KEY, HUDDLE01_PROJECT_ID, REVAI_ACCESS_TOKEN } from "@/config/env"
 import { useLocalAudio, useLocalPeer, usePeerIds, useRoom } from "@huddle01/react/hooks"
 import { AccessToken, Role } from "@huddle01/server-sdk/auth"
+import { Recorder } from "@huddle01/server-sdk/recorder"
 
 import LocalPeerData from "@/components/huddle01/me"
 import ShowPeers from "@/components/huddle01/peers"
 
-let mediaRecorder: MediaRecorder
-const chunks: Array<Blob> = []
+// let mediaRecorder: MediaRecorder
+// const chunks: Array<Blob> = []
+let socket: WebSocket
 
 const Huddle01Room = () => {
   const router = useRouter()
+  const recorder = new Recorder(HUDDLE01_PROJECT_ID, HUDDLE01_API_KEY)
   const { slug } = router.query
 
   const { peerIds } = usePeerIds()
@@ -39,42 +42,37 @@ const Huddle01Room = () => {
     chunks,
   })
 
-  useEffect(() => {
-    if (isAudioOn) {
-      console.log("Recording audio...")
-      startRecording()
-    } else {
-      console.log("Stopping audio recording...")
-      stopRecording()
-      // saveAndTranscribe()
-      sendAudioToServer()
-    }
-  }, [isAudioOn])
+  const startRecording = async () => {
+    const userToken = await createAccessToken(slug as string)
 
-  const startRecording = () => {
-    if (!audioStream) return
-
-    mediaRecorder = new MediaRecorder(audioStream, {
-      mimeType: "audio/webm",
+    const response = await fetch(`https://api.rev.ai/speechtotext/v1/live_stream/rtmp`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${REVAI_ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        media_url: `rtmp://live.restream.io/live/${slug}`,
+      }),
     })
 
-    mediaRecorder.ondataavailable = (e) => {
-      console.log("Fetching audio data: ", e.data)
-      chunks.push(e.data)
-      if (chunks.length >= 30 || e.data.size > 120000) {
-        stopRecording()
-        // saveAndTranscribe()
-        sendAudioToServer()
-      }
+    const data = await response.json()
+
+    const { ingestion_url, read_url, stream_name } = data
+    socket = new WebSocket(read_url)
+
+    socket.onopen = () => {
+      console.log("Socket connected")
+      recorder.startLivestream({
+        roomId: slug,
+        token: userToken,
+        rtmpUrls: [ingestion_url],
+      })
     }
 
-    mediaRecorder.start(30000)
-  }
-
-  const stopRecording = () => {
-    if (!mediaRecorder) return
-
-    mediaRecorder.stop()
+    socket.onmessage = (event) => {
+      console.log(event.type, event.data)
+    }
   }
 
   // const saveAndTranscribe = () => {
@@ -123,23 +121,23 @@ const Huddle01Room = () => {
   //     })
   // }
 
-  const sendAudioToServer = () => {
-    const formData = new FormData()
-    formData.append("audio", new Blob(chunks, { type: "audio/webm" }))
+  // const sendAudioToServer = () => {
+  //   const formData = new FormData()
+  //   formData.append("audio", new Blob(chunks, { type: "audio/webm" }))
 
-    fetch("http://localhost:5001/upload", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Transcription:", data)
-        // Handle the transcription data as needed in your app
-      })
-      .catch((error) => {
-        console.error("Error:", error)
-      })
-  }
+  //   fetch("http://localhost:5001/upload", {
+  //     method: "POST",
+  //     body: formData,
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("Transcription:", data)
+  //       // Handle the transcription data as needed in your app
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error)
+  //     })
+  // }
 
   const createAccessToken = async (userRoomId: string) => {
     const accessToken = new AccessToken({
