@@ -1,13 +1,15 @@
 import {
-  PushAPI,
+  ChatStatus,
   CONSTANTS,
   GroupCreationOptions,
+  IMessageIPFS,
   ManageGroupOptions,
   Message,
-  IMessageIPFS,
   MessageObj,
-  ChatStatus,
+  PushAPI,
   Rules,
+  space,
+  ConditionType,
 } from "@pushprotocol/restapi"
 import { PushStream } from "@pushprotocol/restapi/src/lib/pushstream/PushStream"
 import { ethers } from "ethers"
@@ -412,12 +414,90 @@ const PushProvider = ({ children }: IPushProvider) => {
   /**
    * NOTE: Push Spaces
    */
-  const createSpace = async () => {
+  const createSpace = async (params: { name?: string; desc?: string }) => {
     if (!user) {
       return null
     }
 
-    // const response = await PushAPI.
+    // const signer: viemSignerType
+
+    const { name, desc } = params
+
+    const response = await space.create({
+      spaceName: name ?? "Creator space",
+      spaceDescription: desc ?? "",
+
+      // TODO: Filter speakers to creator and Filter listners to all the users
+      speakers: ["0x3829E53A15856d1846e1b52d3Bdf5839705c29e5"],
+      listeners: [
+        "0x9e60c47edF21fa5e5Af33347680B3971F2FfD464",
+        "0x3829E53A15856d1846e1b52d3Bdf5839705c29e5",
+      ],
+
+      isPublic: true,
+      // TODO: Add a valid viem Signer
+      signer: null,
+      env: CONSTANTS.ENV.STAGING,
+      // Decrypt the private key
+      // TODO: Add a valid pgpDecryptedPvtKey: https://www.npmjs.com/package/@pushprotocol/restapi#to-create-a-space
+      pgpPrivateKey: pgpDecryptedPvtKey,
+      scheduleAt: new Date("2024-07-15T14:48:00.000Z"),
+      scheduleEnd: new Date("2024-07-15T15:48:00.000Z"),
+
+      // Token gating
+      /**
+        contract?: string;
+        amount?: number;
+        decimals?: number;
+        guildId?: string;
+        guildRoleId?: string;
+        guildRoleAction?: 'all' | 'any';
+        url?: string;
+        comparison?: '>' | '<' | '>=' | '<=' | '==' | '!=';
+       */
+      rules: {
+        entry: {
+          conditions: [
+            {
+              any: [
+                {
+                  type: ConditionType.PUSH,
+                  // type: "PUSH",
+                  category: "ERC1155",
+                  subcategory: "holder",
+                  data: {
+                    contract: "eip155:5:0x2b9bE9259a4F5Ba6344c1b1c07911539642a2D33",
+                    amount: 1000,
+                    decimals: 18,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    })
+
+    const { spaceId } = response
+
+    return spaceId
+  }
+
+  const joinSpace = async (spaceId: string) => {
+    if (!user) {
+      return null
+    }
+
+    const response = await space.getAccess({
+      spaceId: spaceId,
+      // TODO: User address
+      did: "",
+      env: CONSTANTS.ENV.STAGING,
+    })
+
+    const { entry } = response
+
+    return entry
   }
 
   return (
