@@ -1,28 +1,35 @@
+import React, { useEffect, useState } from "react"
+import { ethers } from "ethers"
+
 import {
   ChatStatus,
+  ConditionType,
   CONSTANTS,
   GroupCreationOptions,
+  IFeeds,
   IMessageIPFS,
   ManageGroupOptions,
   Message,
   MessageObj,
   PushAPI,
   Rules,
+  SignerType,
   space,
   SpaceIFeeds,
-  ConditionType,
 } from "@pushprotocol/restapi"
 import { PushStream } from "@pushprotocol/restapi/src/lib/pushstream/PushStream"
-import { ethers } from "ethers"
-import React, { useEffect, useState } from "react"
+import { useSigner } from "@thirdweb-dev/react"
 
 interface IPushContext {
   user: PushAPI | null
   stream: PushStream | null
-  initialize: () => Promise<void>
+  initialize: (signer?: SignerType) => Promise<void>
 
   chat: {
-    chatOverview: () => void
+    chatOverview: () => Promise<{
+      chats: IFeeds[]
+      requests: IFeeds[]
+    } | null>
     fetchChats: (recipient: string) => Promise<{
       latest: {}
       history: IMessageIPFS[]
@@ -154,6 +161,8 @@ const PushProvider = ({ children }: IPushProvider) => {
   const [user, setUser] = useState<PushAPI | null>(null)
   const [stream, setStream] = useState<PushStream | null>(null)
 
+  const signer = useSigner()
+
   useEffect(() => {
     if (!stream) {
       return
@@ -182,24 +191,25 @@ const PushProvider = ({ children }: IPushProvider) => {
     }
   }, [stream])
 
-  const initialize = async () => {
-    // TODO: Replace with actual signer
-    const signer = ethers.Wallet.createRandom()
-
-    const _user = await PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING })
+  const initialize = async (sig?: SignerType) => {
+    const _signer = sig ?? signer
+    if (!_signer) {
+      return
+    }
+    const _user = await PushAPI.initialize(_signer as SignerType, { env: CONSTANTS.ENV.STAGING })
     setUser(_user)
 
     const _stream = await _user.initStream([CONSTANTS.STREAM.CHAT])
     setStream(_stream)
   }
 
-  const chatOverview = () => {
+  const chatOverview = async () => {
     if (!user) {
       return null
     }
 
-    const chats = user.chat.list("CHATS")
-    const requests = user.chat.list("REQUESTS")
+    const chats = await user.chat.list("CHATS")
+    const requests = await user.chat.list("REQUESTS")
 
     return {
       chats,
@@ -266,7 +276,14 @@ const PushProvider = ({ children }: IPushProvider) => {
       return null
     }
 
-    const response = await user.chat.group.create(name, options)
+    if (name.length === 0 || name.length > 32) {
+      name = "fanatix"
+    }
+
+    console.log("Creating group...", name, {
+      ...options,
+    })
+    const response = await user.chat.group.create(name ?? "fanatix", options)
 
     const {
       chatId,

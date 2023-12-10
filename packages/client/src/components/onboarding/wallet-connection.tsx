@@ -1,10 +1,12 @@
-import React, { useEffect, useContext } from "react"
-import Image from "next/image"
+import React, { useContext, useEffect } from "react"
 import axios from "axios"
-import { useRouter } from "next/router"
 import { Contract, ethers } from "ethers"
-import { contractAddress, abi } from "../../assets/abi/fanatix.json"
+import Image from "next/image"
+import { useRouter } from "next/router"
+import { toast } from "react-toastify"
+
 import MetamaskIcon from "@/assets/svg/wallets/metamask.svg"
+import { usePushContext } from "@/providers/push-context"
 import {
   metamaskWallet,
   useConnect,
@@ -13,8 +15,10 @@ import {
   useUser,
   useWallet,
 } from "@thirdweb-dev/react"
+
 import { UserContext } from "@/components/layout"
-import { toast } from "react-toastify"
+
+import { abi, contractAddress } from "../../assets/abi/fanatix.json"
 import { mintingContract } from "../contract_info/contract_info"
 import Button from "../ui/button"
 
@@ -25,6 +29,10 @@ const metamask = metamaskWallet()
 const WalletConnection = () => {
   const router = useRouter()
 
+  const {
+    initialize,
+    group: { createGroup },
+  } = usePushContext()
   const connect = useConnect()
   const connectionStatus = useConnectionStatus()
   const userWallet = useWallet()
@@ -41,27 +49,28 @@ const WalletConnection = () => {
   useEffect(() => {
     console.log("signer: ", signer)
     if (signer) {
-      let signerAddress: string;
+      let signerAddress: string
       signer.getAddress().then((address) => {
-        signerAddress = address;
+        signerAddress = address
       })
       userWallet?.getAddress().then(async (address) => {
-          setUser({
-            isLoggedIn: true,
-            isCreator: false,
-            user: {
-              walletAddress: address,
-            },
-            creator: {
-              lensId: "",
-              contract: signerAddress,
-            },
-          })
+        setUser({
+          isLoggedIn: true,
+          isCreator: false,
+          user: {
+            walletAddress: address,
+          },
+          creator: {
+            lensId: "",
+            contract: signerAddress,
+          },
+        })
         const dbData = await axios.post("/api/getData", {
           data: {
             walletAddress: address,
           },
         })
+        console.log("Data from DB: ", dbData?.data?.value)
         if (!dbData.data.value) {
           const social = await axios
             .post("/api/getSocials", {
@@ -120,6 +129,14 @@ const WalletConnection = () => {
                   contract: signerAddress,
                 },
               },
+            })
+
+            // Create a new group for the creator
+            await initialize()
+            await createGroup(user?.creator?.lensId ?? "", {
+              admins: [signerAddress],
+              description: "Group for the creator",
+              private: false,
             })
           }
         } else {
