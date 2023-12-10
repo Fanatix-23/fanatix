@@ -7,6 +7,8 @@ import { IFeeds } from "@pushprotocol/restapi"
 import { useSigner } from "@thirdweb-dev/react"
 
 import { UserContext } from "@/components/layout"
+import Avatar from "boring-avatars"
+import Button from "@/components/ui/button"
 
 const ChatPage = () => {
   const router = useRouter()
@@ -84,9 +86,20 @@ const ChatPage = () => {
   }, [user])
 
   return (
-    <div>
+    <div className="min-h-screen center">
       {chats.map((chat) => {
-        return <div key={chat.chatId}>{chat.name}</div>
+        return (
+          <div key={chat.chatId}>
+            <div className="bg-primary p-4 center flex-col rounded-lg gap-4">
+              <Avatar size={40} name={chat.name ?? "fanatix chats"} variant="beam" />
+              <div className="flex flex-col text-center gap-2">
+                <h1 className="text-accent text-2xl">{chat?.name ?? "Fanatix"}</h1>
+                <p className="text-white">{chat?.wallets?.[0] ?? "0xb299b...e45160"}</p>
+              </div>
+              <Button>Enter chat</Button>
+            </div>
+          </div>
+        )
       })}
     </div>
   )
