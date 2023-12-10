@@ -5,8 +5,8 @@ import Link from "next/link"
 import { MdStarBorder, MdMoney, MdCardMembership, MdStar } from "react-icons/md"
 
 export interface NFTDisplayCardProps {
-  image: string
-  socialImage: string
+  image: React.ReactNode
+  socialImage: React.ReactNode
   name: string
   link: string
   handle: string
@@ -26,20 +26,14 @@ const NFTDisplayCard: React.FC<NFTDisplayCardProps> = ({
   return (
     <Link href={link}>
       <div className="relative min-h-[360px] w-72 p-2 rounded-xl border border-accent bg-primary">
-        <div className="relative h-64 w-full rounded-xl overflow-hidden">
-          <Image fill src={image} alt="" />
+        <div className="relative h-64 w-full rounded-xl overflow-hidden flex items-center justify-center">
+          {image}
         </div>
         <div className="my-2 flex flex-col">
           <div className="flex items-center gap-2">
-            <Image
-              src={socialImage}
-              height={40}
-              width={40}
-              className="rounded-full aspect-square h-min"
-              alt=""
-            />
-            <div className="flex flex-col">
-              <h1 className="text-xl font-bold text-accent">{name}</h1>
+            {socialImage}
+            <div className="flex flex-col max-w-[90%]">
+              <h1 className="text-xl font-bold text-accent overflow-hidden max-w-[90%]">{name}</h1>
               <p className="text-opacity-40 text-accent font-bold">{handle}</p>
             </div>
           </div>

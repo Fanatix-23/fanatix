@@ -10,7 +10,7 @@ export default async function handler(req: any, res: any) {
     const collection = database.collection("main-collection") // Choose a name for your collection
 
     const value = await collection.find({
-      isCreator: "true"
+      "data.isCreator": true
     }).toArray()
 
     res.status(201).json({ message: "Data fetched successfully!", value: value })

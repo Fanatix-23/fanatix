@@ -12,6 +12,7 @@ const Home = () => {
   const router = useRouter()
   const [loading, setLoading] = React.useState(true)
   React.useEffect(() => {
+    console.log(user)
     if (!user.isLoggedIn) {
       router.push("/")
     }
@@ -19,10 +20,8 @@ const Home = () => {
     if (user.isCreator) {
       router.push("/home/creator")
     }
-
-    console.log(user)
-    // setLoading(false)
-  }, [])
+    setLoading(false)
+  }, [user])
 
   if (loading) return "..."
 

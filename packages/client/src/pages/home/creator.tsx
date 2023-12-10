@@ -6,6 +6,7 @@ import { Tab } from "@headlessui/react"
 import { UserContext } from "@/components/layout"
 import Input from "@/components/ui/input"
 import Button from "@/components/ui/button"
+import Huddle01Stream from "@/components/streamButton"
 
 const Creator = () => {
   const userContext = React.useContext(UserContext)
@@ -15,6 +16,7 @@ const Creator = () => {
 
   const router = useRouter()
   const [loading, setLoading] = React.useState(true)
+  const [revenue, setRevenue] = React.useState(0)
   React.useEffect(() => {
     if (!user?.isLoggedIn) {
       router.push("/")
@@ -92,29 +94,33 @@ const Creator = () => {
                 <div className="flex flex-col gap-5 p-5">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-accent text-2xl">Name</h1>
-                    <p className="text-offset text-lg">{user?.creator.lensId}</p>
+                    <p className="text-primary text-lg">{user?.creator.lensId}</p>
                   </div>
                   <div className="flex flex-col gap-2">
                     <h1 className="text-accent text-2xl">Wallet Address</h1>
-                    <p className="text-offset text-lg">{user?.user.walletAddress}</p>
+                    <p className="text-primary text-lg">{user?.user.walletAddress}</p>
                   </div>
                 </div>
               </Tab.Panel>
               <Tab.Panel>
                 <div className="flex flex-col gap-5 p-5">
                   <div className="flex flex-col gap-2">
-                    <h1 className="text-accent text-2xl">Name</h1>
-                    <p className="text-offset text-lg">{user?.creator.lensId}</p>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h1 className="text-accent text-2xl">Wallet Address</h1>
-                    <p className="text-offset text-lg">{user?.user.walletAddress}</p>
+                    <h1 className="text-accent text-2xl">NFTs Left: </h1>
+                    <p className="text-primary text-lg">{user?.creator.NFTleft || 0}</p>
                   </div>
                 </div>
               </Tab.Panel>
-              <Tab.Panel>
-                <Input name="revenueAmount" placeholder="Enter amount to share" />
-                <Button title="Share!" /> 
+              <Tab.Panel className={"flex flex-col items-center justify-center mx-auto my-5 gap-5"}>
+                <Input
+                  name="revenueAmount"
+                  placeholder="Enter amount to share"
+                  value={revenue}
+                  onChange={setRevenue}
+                />
+                <Button title="Share!" />
+              </Tab.Panel>
+              <Tab.Panel className="my-5 mx-auto flex items-center justify-center">
+                <Huddle01Stream />
               </Tab.Panel>
             </Tab.Group>
           </div>

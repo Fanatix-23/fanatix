@@ -73,7 +73,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           {user?.isLoggedIn ? (
             <Avatar name={user?.user.walletAddress} />
           ) : (
-            <Button title="CONNECT" className="" />
+            <Link href={"/onboarding/investor"}>
+              <Button title="CONNECT" className="" />
+            </Link>
           )}
         </div>
       </div>

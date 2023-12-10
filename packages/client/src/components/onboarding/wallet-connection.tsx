@@ -115,6 +115,7 @@ const WalletConnection = () => {
               creator: {
                 lensId: "",
                 contract: signerAddress,
+                NFTleft: 30
               },
             })
             await axios.post("/api/saveData", {
@@ -127,6 +128,7 @@ const WalletConnection = () => {
                 creator: {
                   lensId: "",
                   contract: signerAddress,
+                  NFTleft: 30
                 },
               },
             })

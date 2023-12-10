@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
       const collection = database.collection("main-collection") // Choose a name for your collection
 
       const value = await collection.findOne({
-        "data.user.walletAddress": data.walletAddress,
+        "data.creator.lensID": data.lensID,
       })
 
       if (value) {

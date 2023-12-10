@@ -15,7 +15,7 @@ const Huddle01Stream = () => {
   const { joinRoom } = useRoom({
     onJoin: () => {
       console.log({
-        displayName: "guest",
+        displayName: "Creator",
         avatarUrl: `/0.png`,
       })
     },
@@ -70,36 +70,14 @@ const Huddle01Stream = () => {
   }
 
   return (
-    <div style={{ pointerEvents: "all", display: "flex" }}>
-      <div className="flex m-2 min-h-screen w-screen justify-center items-center">
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-4">
-            <div className="flex flex-col items-center gap-2">
-              <>
-                <>
-                  <Input
-                    name="displayName"
-                    onChange={(e) => {
-                      console.log("Data being set to", e.target.value)
-                    }}
-                    placeholder="Stream name (eg: My Stream)"
-                    className="rounded-lg border-2 border-gray-200 p-2"
-                  />
-                  <button
-                    className="rounded-lg bg-primary text-accent w-full p-2"
-                    onClick={async () => {
-                      await createAndJoinRoom()
-                    }}
-                  >
-                    Create Stream
-                  </button>
-                </>
-              </>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <button
+      className="rounded-lg bg-primary text-accent w-full p-2"
+      onClick={async () => {
+        await createAndJoinRoom()
+      }}
+    >
+      Create Stream
+    </button>
   )
 }
 

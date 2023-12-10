@@ -25,6 +25,7 @@ export interface IUserContext {
   creator: {
     lensId: string
     contract: {}
+    NFTleft?: number
   }
 }
 

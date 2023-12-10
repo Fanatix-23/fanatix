@@ -19,10 +19,11 @@ const mintingContract = async (signer: ethers.Signer) => {
   return contract
 }
 
-const mintingNFT = async () => {
-  const contract = new ethers.Contract(contractAddress, abi, useSigner())
+const mintingNFT = async (signer: string, address: string) => {
+  const jsonRopc = new ethers.providers.JsonRpcProvider()
+  const contract = new ethers.Contract(contractAddress, abi, jsonRopc.getSigner(signer))
   var val = await contract.composeLDA_ID(1, 1)
-  await contract.mintfantixToOwner(useAddress, val, "data", 1)
+  await contract.mintfantixToOwner(address, val, "data", 1)
 }
 
 const uniqueNFTId = async () => {

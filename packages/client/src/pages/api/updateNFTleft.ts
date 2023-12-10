@@ -12,15 +12,12 @@ export default async function handler(req: any, res: any) {
 
       const collection = database.collection("main-collection") // Choose a name for your collection
 
-      const value = await collection.findOne({
-        "data.user.walletAddress": data.walletAddress,
-      })
-
-      if (value) {
-        res.status(201).json({ message: "Data fetched successfully!", value: value })
-      } else {
-        res.status(201).json({ message: "Data not found!" })
-      }
+      const value = await collection.findOneAndUpdate(
+        {
+          "data.user.walletAddress": data.walletAddress,
+        },
+        { "data.creator.NFTleft": data.NFTleft - 1 }
+      )
     } catch (error) {
       res.status(500).json({ message: "Something went wrong!" })
     } finally {

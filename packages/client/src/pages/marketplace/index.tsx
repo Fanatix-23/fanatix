@@ -5,46 +5,45 @@ import Hoverable from "@/components/ui/hoverable"
 import Input from "@/components/ui/input"
 import axios from "axios"
 import { IUserContext } from "@/components/layout"
+import Avatar from "boring-avatars"
 
 const Marketplace = () => {
   const recommendedNFTs: NFTDisplayCardProps[] = [
     {
-      image: "/image/nft1.jpg",
-      socialImage: "/image/nft1.jpg",
+      image: <Avatar name="nft1" size={250} />,
+      socialImage: <Avatar name="nft1" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
-      tier: "silver",
+      left: 12,
     },
     {
-      image: "/image/nft2.jpg",
-      socialImage: "/image/nft2.jpg",
+      image: <Avatar name="nft2" size={250} />,
+      socialImage: <Avatar name="nft2" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
+      left: 24,
     },
     {
-      image: "/image/nft3.jpg",
-      socialImage: "/image/nft3.jpg",
+      image: <Avatar name="nft3" size={250} />,
+      socialImage: <Avatar name="nft3" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
+      left: 2,
     },
     {
-      image: "/image/nft1.jpg",
-      socialImage: "/image/nft1.jpg",
+      image: <Avatar name="nft1" size={250} />,
+      socialImage: <Avatar name="nft1" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
-      tier: "bronze",
+      left: 15,
     },
   ]
 
@@ -55,7 +54,7 @@ const Marketplace = () => {
       .get("/api/getCreators")
       .then((res) => {
         console.log(res.data)
-        setCreators(res.data)
+        setCreators(res.data.value)
       })
       .catch((err) => {
         console.log(err)
@@ -94,7 +93,24 @@ const Marketplace = () => {
             placeholder="Search for creators"
             className="text-xl border-2 !rounded-full !px-5 border-secondary w-full text-center"
           ></Input>
-          <div className="flex gap-10 justify-evenly"></div>
+          <div className="flex gap-10 justify-evenly">
+            {creators?.map((creator, index) => {
+              return (
+                <Hoverable>
+                  <NFTDisplayCard
+                    cost={"1ETH"}
+                    handle={creator.data.creator?.lensId}
+                    image={<Avatar name={creator.data.user.walletAddress} size={250} />}
+                    left={creator.data.creator?.NFTleft || 30}
+                    link={`/marketplace/${creator.data.creator.lensId}`}
+                    name={creator.data.user.walletAddress}
+                    socialImage={<Avatar name={creator.data.user?.walletAddress} />}
+                    key={index}
+                  />
+                </Hoverable>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>
