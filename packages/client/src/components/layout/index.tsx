@@ -14,7 +14,7 @@ import {
 
 import Footer from "./footer"
 import Header from "./header"
-
+import { PushProvider } from "@/providers/push-context"
 
 export interface IUserContext {
   isLoggedIn: boolean
@@ -23,10 +23,9 @@ export interface IUserContext {
     walletAddress: string
   }
   creator: {
-    lensId: string,
+    lensId: string
     contract: {}
   }
-  
 }
 
 interface T {
@@ -59,7 +58,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
     },
     creator: {
       lensId: "",
-      contract: ""
+      contract: "",
     },
   })
   return (
@@ -69,26 +68,28 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
         activeChain="ethereum"
         clientId="your-client-id"
       >
-        <UserContext.Provider value={{user, setUser}}>
-          <HuddleProvider key="huddle01-provider" client={client}>
-            <Huddle01Provider>
-              <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss={false}
-                draggable={false}
-                pauseOnHover
-                theme="light"
-              />
-              <Header />
-              <main className={clsx("min-h-screen", className)}>{children}</main>
-              <Footer />
-            </Huddle01Provider>
-          </HuddleProvider>
+        <UserContext.Provider value={{ user, setUser }}>
+          <PushProvider>
+            <HuddleProvider key="huddle01-provider" client={client}>
+              <Huddle01Provider>
+                <ToastContainer
+                  position="top-center"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss={false}
+                  draggable={false}
+                  pauseOnHover
+                  theme="light"
+                />
+                <Header />
+                <main className={clsx("min-h-screen", className)}>{children}</main>
+                <Footer />
+              </Huddle01Provider>
+            </HuddleProvider>
+          </PushProvider>
         </UserContext.Provider>
       </ThirdwebProvider>
     </>
