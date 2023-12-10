@@ -24,18 +24,6 @@ const LINKS = [
     ),
   },
   {
-    title: "ABOUT",
-    link: "/about",
-    icon: (
-      <MdOutlineAllInclusive
-        style={{
-          height: "30px",
-          width: "30px",
-        }}
-      />
-    ),
-  },
-  {
     title: "MARKETPLACE",
     link: "/marketplace",
     icon: (

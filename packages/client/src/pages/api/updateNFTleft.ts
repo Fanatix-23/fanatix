@@ -16,8 +16,9 @@ export default async function handler(req: any, res: any) {
         {
           "data.user.walletAddress": data.walletAddress,
         },
-        { "data.creator.NFTleft": data.NFTleft - 1 }
+        { $dec: { "data.creator.NFTleft" : 1 } }
       )
+      res.status(201).json({ message: "Data updated successfully!", value: value })
     } catch (error) {
       res.status(500).json({ message: "Something went wrong!" })
     } finally {

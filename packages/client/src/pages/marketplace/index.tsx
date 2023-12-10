@@ -96,7 +96,7 @@ const Marketplace = () => {
           <div className="flex gap-10 justify-evenly">
             {creators?.map((creator, index) => {
               return (
-                <Hoverable>
+                // <Hoverable>
                   <NFTDisplayCard
                     cost={"1ETH"}
                     handle={creator.data.creator?.lensId}
@@ -107,7 +107,7 @@ const Marketplace = () => {
                     socialImage={<Avatar name={creator.data.user?.walletAddress} />}
                     key={index}
                   />
-                </Hoverable>
+                // </Hoverable>
               )
             })}
           </div>

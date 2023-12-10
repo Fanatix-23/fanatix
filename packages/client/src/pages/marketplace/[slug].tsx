@@ -50,6 +50,7 @@ const NFTDetails = () => {
       <Button
         title="Mint now!"
         onClick={() => {
+          console.log(creator, userWallet)
           mintingNFT(creator.user?.walletAddress, userWallet)
           axios.post("/api/updateNFTleft", {
             data: {
