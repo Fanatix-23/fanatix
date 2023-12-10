@@ -41,11 +41,28 @@ const WalletConnection = () => {
   useEffect(() => {
     console.log("signer: ", signer)
     if (signer) {
-      let signerAddress: string;
+      let signerAddress: string
       signer.getAddress().then((address) => {
-        signerAddress = address;
+        signerAddress = address
       })
       userWallet?.getAddress().then(async (address) => {
+        setUser({
+          isLoggedIn: true,
+          isCreator: false,
+          user: {
+            walletAddress: address,
+          },
+          creator: {
+            lensId: "",
+            contract: signerAddress,
+          },
+        })
+        const dbData = await axios.post("/api/getData", {
+          data: {
+            walletAddress: address,
+          },
+        })
+        if (!dbData.data.value) {
           setUser({
             isLoggedIn: true,
             isCreator: false,
@@ -57,49 +74,10 @@ const WalletConnection = () => {
               contract: signerAddress,
             },
           })
-        const dbData = await axios.post("/api/getData", {
-          data: {
-            walletAddress: address,
-          },
-        })
-        if (!dbData.data.value) {
-          const social = await axios
-            .post("/api/getSocials", {
-              data: {
-                isLoggedIn: true,
-                isCreator: false,
-                user: {
-                  walletAddress: address,
-                },
-                creator: {
-                  lensId: "",
-                  contract: "",
-                },
-              },
-            })
-            .then((res) => res.data)
-          console.log("Socials Data: ", social.data)
-          if (!social.data.Wallet?.socials) {
-            console
-            toast.error("You need a lens account to become a creator")
-            setUser({
-              isLoggedIn: false,
-              isCreator: false,
-              user: {
-                walletAddress: "",
-              },
-              creator: {
-                lensId: "",
-                contract: "",
-              },
-            })
-            userWallet.disconnect()
-          } else {
-            console.log("Creating contract")
-            const contract = await mintingContract(signer)
-            setUser({
+          await axios.post("/api/saveData", {
+            data: {
               isLoggedIn: true,
-              isCreator: true,
+              isCreator: false,
               user: {
                 walletAddress: address,
               },
@@ -107,23 +85,9 @@ const WalletConnection = () => {
                 lensId: "",
                 contract: signerAddress,
               },
-            })
-            await axios.post("/api/saveData", {
-              data: {
-                isLoggedIn: true,
-                isCreator: true,
-                user: {
-                  walletAddress: address,
-                },
-                creator: {
-                  lensId: "",
-                  contract: signerAddress,
-                },
-              },
-            })
-          }
+            },
+          })
         } else {
-          console.log("Got the values: ", dbData.data.value.data)
           setUser(dbData.data.value.data)
         }
       })
