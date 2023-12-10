@@ -96,7 +96,13 @@ const ChatPage = () => {
                 <h1 className="text-accent text-2xl">{chat?.name ?? "Fanatix"}</h1>
                 <p className="text-white">{chat?.wallets?.[0] ?? "0xb299b...e45160"}</p>
               </div>
-              <Button>Enter chat</Button>
+              <Button
+                onClick={() => {
+                  router.push(`/chat/${chat.chatId}`)
+                }}
+              >
+                Enter chat
+              </Button>
             </div>
           </div>
         )
