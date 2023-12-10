@@ -13,7 +13,7 @@ import {
   useUser,
   useWallet,
 } from "@thirdweb-dev/react"
-import { UserContext } from "@/components/layout"
+import { UserContext } from "@/components/layout/index1"
 import { toast } from "react-toastify"
 import { mintingContract } from "../contract_info/contract_info"
 import Button from "../ui/button"
@@ -130,7 +130,7 @@ const WalletConnection = () => {
                 },
               },
             })
-          // }
+          }
         } else {
           console.log("Got the values: ", dbData.data.value.data)
           setUser(dbData.data.value.data)

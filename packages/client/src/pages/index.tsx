@@ -1,7 +1,7 @@
 import NFTDisplayCard, { NFTDisplayCardProps } from "@/components/ui/NFTDisplayCard"
 import Button from "@/components/ui/button"
 import Hoverable from "@/components/ui/hoverable"
-import { UserContext } from "@/components/layout"
+import { UserContext } from "@/components/layout/index1"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -19,8 +19,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
-      tier: "silver",
+      left: 30,
     },
     {
       image: "/image/nft2.jpg",
@@ -29,7 +28,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
+      left: 12,
     },
     {
       image: "/image/nft3.jpg",
@@ -38,7 +37,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
+      left: 30,
     },
     {
       image: "/image/nft1.jpg",
@@ -47,8 +46,7 @@ const HomePage: React.FC<HomePageProps> = () => {
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
-      tier: "bronze",
+      left: 8,
     },
   ]
 

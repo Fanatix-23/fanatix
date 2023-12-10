@@ -4,7 +4,7 @@ import NFTDisplayCard, { NFTDisplayCardProps } from "@/components/ui/NFTDisplayC
 import Hoverable from "@/components/ui/hoverable"
 import Input from "@/components/ui/input"
 import axios from "axios"
-import { IUserContext } from "@/components/layout"
+import { IUserContext } from "@/components/layout/index1"
 
 const Marketplace = () => {
   const recommendedNFTs: NFTDisplayCardProps[] = [

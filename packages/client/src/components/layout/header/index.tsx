@@ -1,10 +1,10 @@
 import React, { ReactNode, useRef } from "react"
 import Avatar from "boring-avatars"
 import Link from "next/link"
-import { createPortal } from "react-dom"
 import { MdOutlineAllInclusive, MdOutlineHome, MdOutlineShoppingBag } from "react-icons/md"
-import { UserContext } from ".."
+import { UserContext } from "../index1"
 import Button from "@/components/ui/button"
+import { useUserSession } from "@/providers/user-context"
 
 interface HeaderProps {
   className?: string
@@ -53,6 +53,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   const headerRef = useRef<HTMLDivElement>(null)
   const userContext = React.useContext(UserContext)
   const user = userContext?.user
+  const userSessionContext = useUserSession()
   return (
     <div className="z-[100] relative">
       <div
@@ -73,7 +74,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           {user?.isLoggedIn ? (
             <Avatar name={user?.user.walletAddress} />
           ) : (
-            <Button title="CONNECT" className="" />
+            <Button
+              title="CONNECT"
+              className=""
+              onClick={() => {
+                userSessionContext?.login()
+              }}
+            />
           )}
         </div>
       </div>

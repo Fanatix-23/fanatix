@@ -1,6 +1,7 @@
 import { Head, Html, Main, NextScript } from "next/document"
 
 const Document = () => {
+  if (typeof window == undefined) return null;
   return (
     <Html lang="en">
       <Head />
