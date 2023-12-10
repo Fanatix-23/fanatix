@@ -9,7 +9,7 @@ import { UserContext } from "@/components/layout"
 const ChatPage = () => {
   const userContext = React.useContext(UserContext)
   const {
-    user: { isCreator, creator },
+    user: { creator },
   } = userContext
   const signer = useSigner()
 
@@ -42,32 +42,32 @@ const ChatPage = () => {
           console.log(c, requests)
 
           if (!c || c.length === 0) {
+            if (!signer) {
+              console.log("No signer")
+              return
+            }
+            const signerAddress = await signer.getAddress()
+
             console.log("No chat detected")
             const dbData = await axios.post("/api/getData", {
               data: {
-                isLoggedIn: true,
-                isCreator: false,
-                user: {
-                  walletAddress: address,
-                },
-                creator: {
-                  lensId: "",
-                  contract: signerAddress,
-                },
+                // walletAddress: signerAddress,
               },
             })
-            if (isCreator) {
-              console.log("Creator: ", creator)
-              if (!signer) {
-                console.log("No signer")
-                return
+            console.log("Query: ", dbData?.data?.value)
+            if (dbData?.data?.value) {
+              const { isCreator } = dbData.data.value.data
+              if (isCreator) {
+                console.log("Creator: ", creator)
+                createGroup(creator?.lensId ?? "fanatix", {
+                  description: "Fanatix Group",
+                  image:
+                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAAADTED8xAAADMElEQVR4nOzVwQnAIBQFQYXff81RUkQCOyDj1YOPnbXWPmeTRef+/3O/OyBjzh3CD95BfqICMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMK0CMO0TAAD//2Anhf4QtqobAAAAAElFTkSuQmCC",
+                  admins: [signerAddress],
+                  private: false,
+                  members: [],
+                })
               }
-              const signerAddress = await signer.getAddress()
-              createGroup(creator?.lensId ?? "fanatix", {
-                description: "Fanatix Group",
-                admins: [signerAddress],
-                private: false,
-              })
             }
           }
         }

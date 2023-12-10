@@ -276,7 +276,14 @@ const PushProvider = ({ children }: IPushProvider) => {
       return null
     }
 
-    const response = await user.chat.group.create(name, options)
+    if (name.length === 0 || name.length > 32) {
+      name = "fanatix"
+    }
+
+    console.log("Creating group...", name, {
+      ...options,
+    })
+    const response = await user.chat.group.create(name ?? "fanatix", options)
 
     const {
       chatId,
