@@ -5,6 +5,7 @@ import { UserContext } from "@/components/layout"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
+import Avatar from "boring-avatars"
 
 interface HomePageProps {
   path?: string
@@ -13,42 +14,40 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = () => {
   const featuredNFTs: NFTDisplayCardProps[] = [
     {
-      image: "/image/nft1.jpg",
-      socialImage: "/image/nft1.jpg",
+      image: <Avatar name="nft1" size={250} />,
+      socialImage: <Avatar name="nft1" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
-      tier: "silver",
+      left: 12,
     },
     {
-      image: "/image/nft2.jpg",
-      socialImage: "/image/nft2.jpg",
+      image: <Avatar name="nft2" size={250} />,
+      socialImage: <Avatar name="nft2" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
+      left: 24,
     },
     {
-      image: "/image/nft3.jpg",
-      socialImage: "/image/nft3.jpg",
+      image: <Avatar name="nft3" size={250} />,
+      socialImage: <Avatar name="nft3" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
+      left: 2,
     },
     {
-      image: "/image/nft1.jpg",
-      socialImage: "/image/nft1.jpg",
+      image: <Avatar name="nft1" size={250} />,
+      socialImage: <Avatar name="nft1" />,
       name: "NFT Name",
       link: "#",
       handle: "@creator1",
       cost: "12 USDC",
-      increase: "12%",
-      tier: "bronze",
+      left: 15,
     },
   ]
 
